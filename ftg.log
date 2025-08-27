@@ -1,0 +1,688 @@
+[FTG] starting at Tue Aug 26 16:16:42 CEST 2025
+[FTG] Installing Friendly-Telegram from GitHub...
+[FTG] starting at Tue Aug 26 16:34:04 CEST 2025
+[FTG] starting at Tue Aug 26 16:34:50 CEST 2025
+[FTG] starting at Tue Aug 26 16:35:02 CEST 2025
+[FTG] starting at Tue Aug 26 16:36:58 CEST 2025
+[FTG] starting at Tue Aug 26 16:38:38 CEST 2025
+[FTG] starting at Tue Aug 26 16:40:11 CEST 2025
+[FTG] Friendly-Telegram not found. Installing...
+[FTG] Installing from FTG_INSTALL_SOURCE=git+https://github.com/FTG-Userbot/FTG-Userbot.git
+[FTG] Install failed from FTG_INSTALL_SOURCE
+[FTG] Trying install: friendly-telegram
+[FTG] Trying install: friendlytelegram
+[FTG] Trying install: git+https://github.com/FTG-Userbot/FTG-Userbot.git
+[FTG] Trying install: git+https://github.com/fast-geek/friendly-telegram.git
+[FTG] ERROR: Unable to install Friendly-Telegram automatically. Set FTG_INSTALL_SOURCE in .env to a valid pip package or git URL, or install manually inside .venv.
+[FTG] starting at Tue Aug 26 16:40:16 CEST 2025
+[FTG] Friendly-Telegram not found. Installing...
+[FTG] Installing from FTG_INSTALL_SOURCE=git+https://github.com/FTG-Userbot/FTG-Userbot.git
+[FTG] Install failed from FTG_INSTALL_SOURCE
+[FTG] Trying install: friendly-telegram
+[FTG] Trying install: friendlytelegram
+[FTG] Trying install: git+https://github.com/FTG-Userbot/FTG-Userbot.git
+[FTG] Trying install: git+https://github.com/fast-geek/friendly-telegram.git
+[FTG] ERROR: Unable to install Friendly-Telegram automatically. Set FTG_INSTALL_SOURCE in .env to a valid pip package or git URL, or install manually inside .venv.
+[FTG] starting at Tue Aug 26 16:49:09 CEST 2025
+[FTG] Friendly-Telegram not found. Installing...
+[FTG] Installing from FTG_INSTALL_SOURCE=git+https://github.com/FTG-Userbot/FTG-Userbot.git
+[FTG] Install failed from FTG_INSTALL_SOURCE
+[FTG] Trying install: friendly-telegram
+[FTG] Trying install: friendlytelegram
+[FTG] Trying install: git+https://github.com/FTG-Userbot/FTG-Userbot.git
+[FTG] Trying install: git+https://github.com/fast-geek/friendly-telegram.git
+[FTG] WARNING: Unable to install Friendly-Telegram automatically. Falling back to lite userbot.
+Please enter your phone (or bot token): Please enter the code you received: Invalid password. Please try again
+[FTG] starting at Tue Aug 26 17:24:21 CEST 2025
+[FTG] Friendly-Telegram not found. Installing...
+[FTG] Installing from FTG_INSTALL_SOURCE=git+https://github.com/FTG-Userbot/FTG-Userbot.git
+[FTG] Install failed from FTG_INSTALL_SOURCE
+[FTG] Trying install: friendly-telegram
+[FTG] Trying install: friendlytelegram
+[FTG] Trying install: git+https://github.com/FTG-Userbot/FTG-Userbot.git
+[FTG] Trying install: git+https://github.com/fast-geek/friendly-telegram.git
+[FTG] WARNING: Unable to install Friendly-Telegram automatically. Falling back to lite userbot.
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/ftg/lite_userbot.py", line 78, in <module>
+    asyncio.run(run())
+    ~~~~~~~~~~~^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.5/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/runners.py", line 195, in run
+    return runner.run(main)
+           ~~~~~~~~~~^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.5/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.5/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/base_events.py", line 725, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "/Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/ftg/lite_userbot.py", line 29, in run
+    await client.start()
+  File "/Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.venv/lib/python3.13/site-packages/telethon/client/auth.py", line 135, in _start
+    await self.connect()
+  File "/Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.venv/lib/python3.13/site-packages/telethon/client/telegrambaseclient.py", line 560, in connect
+    self.session.auth_key = self._sender.auth_key
+    ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.venv/lib/python3.13/site-packages/telethon/sessions/sqlite.py", line 180, in auth_key
+    self._update_session_table()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.venv/lib/python3.13/site-packages/telethon/sessions/sqlite.py", line 194, in _update_session_table
+    c.execute('delete from sessions')
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.OperationalError: database is locked
+[FTG] starting at Tue Aug 26 17:28:35 CEST 2025
+[FTG] Friendly-Telegram not found. Installing...
+[FTG] Installing from FTG_INSTALL_SOURCE=git+https://github.com/FTG-Userbot/FTG-Userbot.git
+[FTG] Install failed from FTG_INSTALL_SOURCE
+[FTG] Trying install: friendly-telegram
+[FTG] Trying install: friendlytelegram
+[FTG] Trying install: git+https://github.com/FTG-Userbot/FTG-Userbot.git
+[FTG] Trying install: git+https://github.com/fast-geek/friendly-telegram.git
+[FTG] WARNING: Unable to install Friendly-Telegram automatically. Falling back to lite userbot.
+[FTG-LITE] STRING_SESSION not found. You will be prompted to login; a new string will be created.
+Please enter your phone (or bot token): Please enter the code you received: [FTG] starting at Tue Aug 26 17:53:15 CEST 2025
+[FTG] Friendly-Telegram not found. Installing...
+[FTG] Installing from FTG_INSTALL_SOURCE=git+https://github.com/FTG-Userbot/FTG-Userbot.git
+[FTG] Install failed from FTG_INSTALL_SOURCE
+[FTG] Trying install: friendly-telegram
+[FTG] Trying install: friendlytelegram
+[FTG] Trying install: git+https://github.com/FTG-Userbot/FTG-Userbot.git
+[FTG] Trying install: git+https://github.com/fast-geek/friendly-telegram.git
+[FTG] WARNING: Unable to install Friendly-Telegram automatically. Falling back to lite userbot.
+[FTG-LITE] STRING_SESSION not found. You will be prompted to login; a new string will be created.
+Please enter your phone (or bot token): Please enter the code you received: [FTG] starting at Tue Aug 26 18:40:41 CEST 2025
+[FTG] Friendly-Telegram not found. Installing...
+[FTG] Installing from FTG_INSTALL_SOURCE=git+https://github.com/FTG-Userbot/FTG-Userbot.git
+[FTG] Install failed from FTG_INSTALL_SOURCE
+[FTG] Trying install: friendly-telegram
+[FTG] Trying install: friendlytelegram
+[FTG] Trying install: git+https://github.com/FTG-Userbot/FTG-Userbot.git
+[FTG] Trying install: git+https://github.com/fast-geek/friendly-telegram.git
+[FTG] WARNING: Unable to install Friendly-Telegram automatically. Falling back to lite userbot.
+[FTG-LITE] STRING_SESSION not found. You will be prompted to login; a new string will be created.
+Please enter your phone (or bot token): Please enter the code you received: [FTG] starting at Tue Aug 26 18:49:43 CEST 2025
+[FTG] Cloning FTG repo: https://github.com/Dragon-Userbot/Dragon-Userbot
+[FTG] Using local FTG repo: /Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo
+[FTG] Detected Dragon-Userbot (main.py).
+Traceback (most recent call last):
+  File "/Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo/main.py", line 28, in <module>
+    from utils import config
+  File "/Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo/utils/config.py", line 6, in <module>
+    api_id = env.int("API_ID")
+  File "/Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.venv/lib/python3.13/site-packages/environs/__init__.py", line 119, in method
+    raise EnvError(
+        f'Environment variable "{proxied_key or parsed_key}" not set',
+    )
+environs.exceptions.EnvError: Environment variable "API_ID" not set
+[FTG] starting at Tue Aug 26 19:05:36 CEST 2025
+[FTG] Updating FTG repo in /Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo
+[FTG] Using local FTG repo: /Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo
+[FTG] Detected Dragon-Userbot (main.py).
+Traceback (most recent call last):
+  File "/Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo/main.py", line 28, in <module>
+    from utils import config
+  File "/Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo/utils/config.py", line 6, in <module>
+    api_id = env.int("API_ID")
+  File "/Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.venv/lib/python3.13/site-packages/environs/__init__.py", line 119, in method
+    raise EnvError(
+        f'Environment variable "{proxied_key or parsed_key}" not set',
+    )
+environs.exceptions.EnvError: Environment variable "API_ID" not set
+[FTG] starting at Tue Aug 26 19:14:49 CEST 2025
+[FTG] Updating FTG repo in /Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo
+[FTG] Using local FTG repo: /Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo
+[FTG] Installing pymongo[srv] for SRV support
+[FTG] Detected Dragon-Userbot (main.py).
+Traceback (most recent call last):
+  File "/Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo/main.py", line 28, in <module>
+    from utils import config
+  File "/Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo/utils/config.py", line 9, in <module>
+    db_type = env.str("DATABASE_TYPE")
+  File "/Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.venv/lib/python3.13/site-packages/environs/__init__.py", line 119, in method
+    raise EnvError(
+        f'Environment variable "{proxied_key or parsed_key}" not set',
+    )
+environs.exceptions.EnvError: Environment variable "DATABASE_TYPE" not set
+[FTG] starting at Tue Aug 26 19:17:10 CEST 2025
+[FTG] Updating FTG repo in /Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo
+[FTG] Using local FTG repo: /Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo
+[FTG] Installing dnspython for Mongo SRV support
+[FTG] Detected Dragon-Userbot (main.py).
+Traceback (most recent call last):
+  File "/Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo/main.py", line 28, in <module>
+    from utils import config
+  File "/Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo/utils/config.py", line 11, in <module>
+    db_name = env.str("DATABASE_NAME")
+  File "/Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.venv/lib/python3.13/site-packages/environs/__init__.py", line 119, in method
+    raise EnvError(
+        f'Environment variable "{proxied_key or parsed_key}" not set',
+    )
+environs.exceptions.EnvError: Environment variable "DATABASE_NAME" not set
+[FTG] starting at Tue Aug 26 19:18:06 CEST 2025
+[FTG] Updating FTG repo in /Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo
+[FTG] Using local FTG repo: /Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo
+[FTG] Installing dnspython for Mongo SRV support
+[FTG] Detected Dragon-Userbot (main.py).
+Traceback (most recent call last):
+  File "/Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo/main.py", line 28, in <module>
+    from utils import config
+  File "/Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo/utils/config.py", line 11, in <module>
+    db_name = env.str("DATABASE_NAME")
+  File "/Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.venv/lib/python3.13/site-packages/environs/__init__.py", line 119, in method
+    raise EnvError(
+        f'Environment variable "{proxied_key or parsed_key}" not set',
+    )
+environs.exceptions.EnvError: Environment variable "DATABASE_NAME" not set
+[FTG] starting at Tue Aug 26 19:21:06 CEST 2025
+[FTG] Updating FTG repo in /Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo
+[FTG] Using local FTG repo: /Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo
+[FTG] Installing dnspython for Mongo SRV support
+[FTG] Detected Dragon-Userbot (main.py).
+Traceback (most recent call last):
+  File "/Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo/main.py", line 29, in <module>
+    from utils.db import db
+  File "/Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo/utils/db.py", line 172, in <module>
+    db = MongoDatabase(config.db_url, config.db_name)
+  File "/Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo/utils/db.py", line 54, in __init__
+    self._client = pymongo.MongoClient(url)
+                   ~~~~~~~~~~~~~~~~~~~^^^^^
+  File "/Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.venv/lib/python3.13/site-packages/pymongo/synchronous/mongo_client.py", line 814, in __init__
+    self._seeds.update(split_hosts(entity, self._port))
+                       ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.venv/lib/python3.13/site-packages/pymongo/uri_parser_shared.py", line 442, in split_hosts
+    raise ConfigurationError("Empty host (or extra comma in host list)")
+pymongo.errors.ConfigurationError: Empty host (or extra comma in host list)
+[FTG] starting at Tue Aug 26 19:23:45 CEST 2025
+[FTG] Updating FTG repo in /Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo
+[FTG] Using local FTG repo: /Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo
+[FTG] Installing dnspython for Mongo SRV support
+[FTG] Detected Dragon-Userbot (main.py).
+Traceback (most recent call last):
+  File "/Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo/main.py", line 30, in <module>
+    from utils.misc import gitrepo, userbot_version
+  File "/Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo/utils/misc.py", line 53, in <module>
+    commits_since_tag = list(gitrepo.iter_commits(f"{gitrepo.tags[-1].name}..HEAD"))
+                                                     ~~~~~~~~~~~~^^^^
+  File "/Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.venv/lib/python3.13/site-packages/git/util.py", line 1212, in __getitem__
+    return list.__getitem__(self, index)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+IndexError: list index out of range
+[FTG] starting at Tue Aug 26 19:27:50 CEST 2025
+[FTG] Updating FTG repo in /Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo
+[FTG] Using local FTG repo: /Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo
+[FTG] Installing dnspython for Mongo SRV support
+[FTG] Detected Dragon-Userbot (main.py).
+INFO:pyrogram.session.auth:Start creating a new auth key on DC2
+INFO:pyrogram.connection.connection:Connecting...
+INFO:pyrogram.connection.connection:Connected! Production DC2 - IPv4
+INFO:pyrogram.session.auth:Done auth key exchange: DhGenOk
+INFO:pyrogram.connection.connection:Disconnected
+INFO:pyrogram.connection.connection:Connecting...
+INFO:pyrogram.connection.connection:Connected! Production DC2 - IPv4
+INFO:pyrogram.connection.connection:Disconnected
+Traceback (most recent call last):
+  File "/Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.venv/lib/python3.13/site-packages/pyrogram/session/session.py", line 175, in start
+    await self.send(raw.functions.Ping(ping_id=0), timeout=self.START_TIMEOUT)
+  File "/Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.venv/lib/python3.13/site-packages/pyrogram/session/session.py", line 468, in send
+    payload = await self.client.loop.run_in_executor(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+RuntimeError: Task <Task pending name='Task-1' coro=<main() running at /Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo/main.py:57> cb=[_run_until_complete_cb() at /opt/homebrew/Cellar/python@3.13/3.13.5/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/base_events.py:181]> got Future <Future pending cb=[_chain_future.<locals>._call_check_cancel() at /opt/homebrew/Cellar/python@3.13/3.13.5/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/futures.py:384]> attached to a different loop
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo/main.py", line 126, in <module>
+    asyncio.run(main())
+    ~~~~~~~~~~~^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.5/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/runners.py", line 195, in run
+    return runner.run(main)
+           ~~~~~~~~~~^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.5/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.5/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/base_events.py", line 725, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "/Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo/main.py", line 57, in main
+    await app.start()
+  File "/Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.venv/lib/python3.13/site-packages/pyrogram/methods/utilities/start.py", line 77, in start
+    is_authorized = await self.connect()
+                    ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.venv/lib/python3.13/site-packages/pyrogram/methods/auth/connect.py", line 47, in connect
+    await self.session.start()
+  File "/Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.venv/lib/python3.13/site-packages/pyrogram/session/session.py", line 211, in start
+    await self.stop()
+  File "/Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.venv/lib/python3.13/site-packages/pyrogram/session/session.py", line 248, in stop
+    await self.recv_task
+RuntimeError: Task <Task pending name='Task-1' coro=<main() running at /Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo/main.py:57> cb=[_run_until_complete_cb() at /opt/homebrew/Cellar/python@3.13/3.13.5/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/base_events.py:181]> got Future <Task pending name='Task-2' coro=<Session.recv_worker() running at /Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.venv/lib/python3.13/site-packages/pyrogram/session/session.py:410>> attached to a different loop
+ERROR:asyncio:Task was destroyed but it is pending!
+task: <Task pending name='Task-2' coro=<Session.recv_worker() running at /Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.venv/lib/python3.13/site-packages/pyrogram/session/session.py:410>>
+<sys>:0: RuntimeWarning: coroutine 'Session.recv_worker' was never awaited
+Telegram is having internal issues PersistentTimestampOutdatedError: Persistent timestamp outdated (caused by GetChannelDifferenceRequest)
+[FTG] starting at Tue Aug 26 23:21:05 CEST 2025
+[FTG] Updating FTG repo in /Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo
+[FTG] Using local FTG repo: /Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo
+[FTG] Installing dnspython for Mongo SRV support
+[FTG] Detected Dragon-Userbot (main.py).
+[FTG] python3.10 not found. Attempting to install via Homebrew...
+[FTG] Fallback to system Python for Dragon-Userbot
+INFO:pyrogram.session.auth:Start creating a new auth key on DC2
+INFO:pyrogram.connection.connection:Connecting...
+INFO:pyrogram.connection.connection:Connected! Production DC2 - IPv4
+INFO:pyrogram.session.auth:Done auth key exchange: DhGenOk
+INFO:pyrogram.connection.connection:Disconnected
+INFO:pyrogram.connection.connection:Connecting...
+INFO:pyrogram.connection.connection:Connected! Production DC2 - IPv4
+INFO:pyrogram.connection.connection:Disconnected
+Traceback (most recent call last):
+  File "/Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.venv/lib/python3.13/site-packages/pyrogram/session/session.py", line 175, in start
+    await self.send(raw.functions.Ping(ping_id=0), timeout=self.START_TIMEOUT)
+  File "/Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.venv/lib/python3.13/site-packages/pyrogram/session/session.py", line 468, in send
+    payload = await self.client.loop.run_in_executor(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+RuntimeError: Task <Task pending name='Task-1' coro=<main() running at /Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo/main.py:57> cb=[_run_until_complete_cb() at /opt/homebrew/Cellar/python@3.13/3.13.5/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/base_events.py:181]> got Future <Future pending cb=[_chain_future.<locals>._call_check_cancel() at /opt/homebrew/Cellar/python@3.13/3.13.5/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/futures.py:384]> attached to a different loop
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo/main.py", line 126, in <module>
+    asyncio.run(main())
+    ~~~~~~~~~~~^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.5/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/runners.py", line 195, in run
+    return runner.run(main)
+           ~~~~~~~~~~^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.5/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.5/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/base_events.py", line 725, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "/Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo/main.py", line 57, in main
+    await app.start()
+  File "/Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.venv/lib/python3.13/site-packages/pyrogram/methods/utilities/start.py", line 77, in start
+    is_authorized = await self.connect()
+                    ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.venv/lib/python3.13/site-packages/pyrogram/methods/auth/connect.py", line 47, in connect
+    await self.session.start()
+  File "/Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.venv/lib/python3.13/site-packages/pyrogram/session/session.py", line 211, in start
+    await self.stop()
+  File "/Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.venv/lib/python3.13/site-packages/pyrogram/session/session.py", line 248, in stop
+    await self.recv_task
+RuntimeError: Task <Task pending name='Task-1' coro=<main() running at /Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo/main.py:57> cb=[_run_until_complete_cb() at /opt/homebrew/Cellar/python@3.13/3.13.5/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/base_events.py:181]> got Future <Task pending name='Task-2' coro=<Session.recv_worker() running at /Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.venv/lib/python3.13/site-packages/pyrogram/session/session.py:410>> attached to a different loop
+ERROR:asyncio:Task was destroyed but it is pending!
+task: <Task pending name='Task-2' coro=<Session.recv_worker() running at /Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.venv/lib/python3.13/site-packages/pyrogram/session/session.py:410>>
+<sys>:0: RuntimeWarning: coroutine 'Session.recv_worker' was never awaited
+[FTG] starting at Tue Aug 26 23:27:01 CEST 2025
+[FTG] Updating FTG repo in /Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo
+[FTG] Using local FTG repo: /Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo
+[FTG] Installing dnspython for Mongo SRV support
+[FTG] Detected Dragon-Userbot (main.py).
+[FTG] Launching Dragon-Userbot with Python Python 3.11.13
+INFO:pyrogram.session.auth:Start creating a new auth key on DC2
+INFO:pyrogram.connection.connection:Connecting...
+INFO:pyrogram.connection.connection:Connected! Production DC2 - IPv4
+INFO:pyrogram.session.auth:Done auth key exchange: DhGenOk
+INFO:pyrogram.connection.connection:Disconnected
+INFO:pyrogram.connection.connection:Connecting...
+INFO:pyrogram.connection.connection:Connected! Production DC2 - IPv4
+INFO:pyrogram.connection.connection:Disconnected
+Traceback (most recent call last):
+  File "/Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.venv_dragon/lib/python3.11/site-packages/pyrogram/session/session.py", line 175, in start
+    await self.send(raw.functions.Ping(ping_id=0), timeout=self.START_TIMEOUT)
+  File "/Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.venv_dragon/lib/python3.11/site-packages/pyrogram/session/session.py", line 468, in send
+    payload = await self.client.loop.run_in_executor(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Task <Task pending name='Task-1' coro=<main() running at /Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo/main.py:57> cb=[_run_until_complete_cb() at /opt/homebrew/Cellar/python@3.11/3.11.13/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py:181]> got Future <Future pending cb=[_chain_future.<locals>._call_check_cancel() at /opt/homebrew/Cellar/python@3.11/3.11.13/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/futures.py:387]> attached to a different loop
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo/main.py", line 126, in <module>
+    asyncio.run(main())
+  File "/opt/homebrew/Cellar/python@3.11/3.11.13/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.13/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.13/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo/main.py", line 57, in main
+    await app.start()
+  File "/Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.venv_dragon/lib/python3.11/site-packages/pyrogram/methods/utilities/start.py", line 77, in start
+    is_authorized = await self.connect()
+                    ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.venv_dragon/lib/python3.11/site-packages/pyrogram/methods/auth/connect.py", line 47, in connect
+    await self.session.start()
+  File "/Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.venv_dragon/lib/python3.11/site-packages/pyrogram/session/session.py", line 211, in start
+    await self.stop()
+RuntimeError: Task <Task pending name='Task-1' coro=<main() running at /Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo/main.py:57> cb=[_run_until_complete_cb() at /opt/homebrew/Cellar/python@3.11/3.11.13/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py:181]> got Future <Task pending name='Task-15' coro=<Session.recv_worker() running at /Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.venv_dragon/lib/python3.11/site-packages/pyrogram/session/session.py:410>> attached to a different loop
+ERROR:asyncio:Task was destroyed but it is pending!
+task: <Task pending name='Task-15' coro=<Session.recv_worker() running at /Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.venv_dragon/lib/python3.11/site-packages/pyrogram/session/session.py:410>>
+sys:1: RuntimeWarning: coroutine 'Session.recv_worker' was never awaited
+[FTG] starting at Tue Aug 26 23:29:36 CEST 2025
+[FTG] Updating FTG repo in /Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo
+[FTG] Using local FTG repo: /Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo
+[FTG] Installing dnspython for Mongo SRV support
+[FTG] Detected Dragon-Userbot (main.py).
+[FTG] Launching Dragon-Userbot with Python Python 3.11.13
+INFO:pyrogram.session.auth:Start creating a new auth key on DC2
+INFO:pyrogram.connection.connection:Connecting...
+INFO:pyrogram.connection.connection:Connected! Production DC2 - IPv4
+INFO:pyrogram.session.auth:Done auth key exchange: DhGenOk
+INFO:pyrogram.connection.connection:Disconnected
+INFO:pyrogram.connection.connection:Connecting...
+INFO:pyrogram.connection.connection:Connected! Production DC2 - IPv4
+INFO:pyrogram.connection.connection:Disconnected
+Traceback (most recent call last):
+  File "/Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.venv_dragon/lib/python3.11/site-packages/pyrogram/session/session.py", line 175, in start
+    await self.send(raw.functions.Ping(ping_id=0), timeout=self.START_TIMEOUT)
+  File "/Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.venv_dragon/lib/python3.11/site-packages/pyrogram/session/session.py", line 468, in send
+    payload = await self.client.loop.run_in_executor(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Task <Task pending name='Task-1' coro=<main() running at /Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo/main.py:57> cb=[_run_until_complete_cb() at /opt/homebrew/Cellar/python@3.11/3.11.13/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py:181]> got Future <Future pending cb=[_chain_future.<locals>._call_check_cancel() at /opt/homebrew/Cellar/python@3.11/3.11.13/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/futures.py:387]> attached to a different loop
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo/main.py", line 126, in <module>
+    asyncio.run(main())
+  File "/opt/homebrew/Cellar/python@3.11/3.11.13/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.13/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.11/3.11.13/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo/main.py", line 57, in main
+    await app.start()
+  File "/Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.venv_dragon/lib/python3.11/site-packages/pyrogram/methods/utilities/start.py", line 77, in start
+    is_authorized = await self.connect()
+                    ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.venv_dragon/lib/python3.11/site-packages/pyrogram/methods/auth/connect.py", line 47, in connect
+    await self.session.start()
+  File "/Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.venv_dragon/lib/python3.11/site-packages/pyrogram/session/session.py", line 211, in start
+    await self.stop()
+RuntimeError: Task <Task pending name='Task-1' coro=<main() running at /Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo/main.py:57> cb=[_run_until_complete_cb() at /opt/homebrew/Cellar/python@3.11/3.11.13/Frameworks/Python.framework/Versions/3.11/lib/python3.11/asyncio/base_events.py:181]> got Future <Task pending name='Task-15' coro=<Session.recv_worker() running at /Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.venv_dragon/lib/python3.11/site-packages/pyrogram/session/session.py:410>> attached to a different loop
+ERROR:asyncio:Task was destroyed but it is pending!
+task: <Task pending name='Task-15' coro=<Session.recv_worker() running at /Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.venv_dragon/lib/python3.11/site-packages/pyrogram/session/session.py:410>>
+sys:1: RuntimeWarning: coroutine 'Session.recv_worker' was never awaited
+[FTG] starting at Tue Aug 26 23:36:28 CEST 2025
+[FTG] Updating FTG repo in /Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo
+[FTG] Using local FTG repo: /Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo
+[FTG] Installing dnspython for Mongo SRV support
+[FTG] Detected Dragon-Userbot (main.py).
+[FTG] Launching Dragon-Userbot with Python Python 3.11.13
+[FTG] starting at Tue Aug 26 23:38:25 CEST 2025
+[FTG] Updating FTG repo in /Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo
+[FTG] Using local FTG repo: /Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo
+[FTG] Installing dnspython for Mongo SRV support
+[FTG] Detected Dragon-Userbot (main.py).
+[FTG] Launching Dragon-Userbot with Python Python 3.11.13
+[FTG] starting at Tue Aug 26 23:47:13 CEST 2025
+[FTG] Friendly-Telegram not found. Installing...
+[FTG] Trying install: friendly-telegram
+[FTG] Trying install: friendlytelegram
+[FTG] Trying install: git+https://github.com/FTG-Userbot/FTG-Userbot.git
+[FTG] Trying install: git+https://github.com/fast-geek/friendly-telegram.git
+[FTG] WARNING: Unable to install Friendly-Telegram automatically. Falling back to lite userbot.
+[FTG-LITE] STRING_SESSION not found. You will be prompted to login; a new string will be created.
+Please enter your phone (or bot token): Please enter the code you received: [FTG] starting at Tue Aug 26 23:52:05 CEST 2025
+[FTG] Friendly-Telegram not found. Installing...
+[FTG] Trying install: friendly-telegram
+[FTG] Trying install: friendlytelegram
+[FTG] Trying install: git+https://github.com/FTG-Userbot/FTG-Userbot.git
+[FTG] Trying install: git+https://github.com/fast-geek/friendly-telegram.git
+[FTG] WARNING: Unable to install Friendly-Telegram automatically. Falling back to lite userbot.
+[FTG-LITE] STRING_SESSION not found. You will be prompted to login; a new string will be created.
+Please enter your phone (or bot token): Please enter the code you received: [FTG] starting at Tue Aug 26 23:57:13 CEST 2025
+[FTG] Using detected local FTG repo: /Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo
+[FTG] Using local FTG repo: /Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo
+[FTG] Detected Dragon-Userbot (main.py).
+[FTG] Launching Dragon-Userbot with Python Python 3.11.13
+[FTG] starting at Wed Aug 27 00:01:10 CEST 2025
+[FTG] Using detected local FTG repo: /Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo
+[FTG] Using local FTG repo: /Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo
+[FTG] Detected Dragon-Userbot (main.py).
+[FTG] Launching Dragon-Userbot with Python Python 3.11.13
+[run_dragon.py] An unexpected error occurred: Empty host (or extra comma in host list)
+[run_dragon.py] Applying macOS asyncio policy workaround
+[FTG] starting at Wed Aug 27 00:11:29 CEST 2025
+[FTG] Using detected local FTG repo: /Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo
+[FTG] Using local FTG repo: /Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo
+[FTG] Detected Dragon-Userbot (main.py).
+[FTG] Launching Dragon-Userbot with Python Python 3.11.13
+[run_dragon.py] An unexpected error occurred: Empty host (or extra comma in host list)
+[run_dragon.py] Applying macOS asyncio policy workaround
+[FTG] starting at Wed Aug 27 00:13:20 CEST 2025
+[FTG] Using detected local FTG repo: /Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo
+[FTG] Using local FTG repo: /Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo
+[FTG] Installing dnspython for Mongo SRV support
+[FTG] Detected Dragon-Userbot (main.py).
+[FTG] Launching Dragon-Userbot with Python Python 3.11.13
+INFO:pyrogram.session.auth:Start creating a new auth key on DC2
+INFO:pyrogram.connection.connection:Connecting...
+INFO:pyrogram.connection.connection:Connected! Production DC2 - IPv4
+INFO:pyrogram.session.auth:Done auth key exchange: DhGenOk
+INFO:pyrogram.connection.connection:Disconnected
+INFO:pyrogram.connection.connection:Connecting...
+INFO:pyrogram.connection.connection:Connected! Production DC2 - IPv4
+INFO:pyrogram.session.session:NetworkTask started
+INFO:pyrogram.session.session:Session initialized: Layer 158
+INFO:pyrogram.session.session:Device: Dragon-Userbot @ ae021e8 - 4.0.1
+INFO:pyrogram.session.session:System: Darwin Kernel Version 25.0.0: Thu Aug 14 21:58:31 PDT 2025; root:xnu-12377.1.8~5/RELEASE_ARM64_T6041 arm64 (en)
+INFO:pyrogram.session.session:Session started
+[run_dragon.py] Applying macOS asyncio policy workaround
+[run_dragon.py] Successfully imported main from Dragon-Userbot
+Welcome to Pyrogram (version 2.0.106)
+Pyrogram is free software and comes with ABSOLUTELY NO WARRANTY. Licensed
+under the terms of the GNU Lesser General Public License v3.0 (LGPL-3.0).
+
+Enter phone number or bot token: INFO:pyrogram.session.session:PingTask started
+INFO:pyrogram.session.session:NetworkTask stopped
+INFO:pyrogram.session.session:PingTask stopped
+INFO:pyrogram.connection.connection:Disconnected
+INFO:pyrogram.session.session:Session stopped
+INFO:pyrogram.connection.connection:Connecting...
+INFO:pyrogram.connection.connection:Connected! Production DC2 - IPv4
+INFO:pyrogram.session.session:NetworkTask started
+INFO:pyrogram.session.session:Session initialized: Layer 158
+INFO:pyrogram.session.session:Device: Dragon-Userbot @ ae021e8 - 4.0.1
+INFO:pyrogram.session.session:System: Darwin Kernel Version 25.0.0: Thu Aug 14 21:58:31 PDT 2025; root:xnu-12377.1.8~5/RELEASE_ARM64_T6041 arm64 (en)
+INFO:pyrogram.session.session:Session started
+INFO:pyrogram.session.session:PingTask started
+[FTG] starting at Wed Aug 27 00:23:51 CEST 2025
+[FTG] Using detected local FTG repo: /Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo
+[FTG] Using local FTG repo: /Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo
+[FTG] Installing dnspython for Mongo SRV support
+[FTG] Detected Dragon-Userbot (main.py).
+[FTG] Launching Dragon-Userbot with Python Python 3.11.13
+INFO:pyrogram.session.auth:Start creating a new auth key on DC2
+INFO:pyrogram.connection.connection:Connecting...
+INFO:pyrogram.connection.connection:Connected! Production DC2 - IPv4
+INFO:pyrogram.session.auth:Done auth key exchange: DhGenOk
+INFO:pyrogram.connection.connection:Disconnected
+INFO:pyrogram.connection.connection:Connecting...
+INFO:pyrogram.connection.connection:Connected! Production DC2 - IPv4
+INFO:pyrogram.session.session:NetworkTask started
+INFO:pyrogram.session.session:Session initialized: Layer 158
+INFO:pyrogram.session.session:Device: Dragon-Userbot @ ae021e8 - 4.0.1
+INFO:pyrogram.session.session:System: Darwin Kernel Version 25.0.0: Thu Aug 14 21:58:31 PDT 2025; root:xnu-12377.1.8~5/RELEASE_ARM64_T6041 arm64 (en)
+INFO:pyrogram.session.session:Session started
+[run_dragon.py] Applying macOS asyncio policy workaround
+[run_dragon.py] Successfully imported main from Dragon-Userbot
+Welcome to Pyrogram (version 2.0.106)
+Pyrogram is free software and comes with ABSOLUTELY NO WARRANTY. Licensed
+under the terms of the GNU Lesser General Public License v3.0 (LGPL-3.0).
+
+Enter phone number or bot token: INFO:pyrogram.session.session:PingTask started
+[FTG] starting at Wed Aug 27 00:29:16 CEST 2025
+[FTG] Using detected local FTG repo: /Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo
+[FTG] Using local FTG repo: /Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo
+[FTG] Installing dnspython for Mongo SRV support
+[FTG] Detected Dragon-Userbot (main.py).
+[FTG] Launching Dragon-Userbot with Python Python 3.11.13
+INFO:pyrogram.session.auth:Start creating a new auth key on DC2
+INFO:pyrogram.connection.connection:Connecting...
+INFO:pyrogram.connection.connection:Connected! Production DC2 - IPv4
+INFO:pyrogram.session.auth:Done auth key exchange: DhGenOk
+INFO:pyrogram.connection.connection:Disconnected
+INFO:pyrogram.connection.connection:Connecting...
+INFO:pyrogram.connection.connection:Connected! Production DC2 - IPv4
+INFO:pyrogram.session.session:NetworkTask started
+INFO:pyrogram.session.session:Session initialized: Layer 158
+INFO:pyrogram.session.session:Device: Dragon-Userbot @ ae021e8 - 4.0.1
+INFO:pyrogram.session.session:System: Darwin Kernel Version 25.0.0: Thu Aug 14 21:58:31 PDT 2025; root:xnu-12377.1.8~5/RELEASE_ARM64_T6041 arm64 (en)
+INFO:pyrogram.session.session:Session started
+[run_dragon.py] Applying macOS asyncio policy workaround
+[run_dragon.py] Successfully imported main from Dragon-Userbot
+Welcome to Pyrogram (version 2.0.106)
+Pyrogram is free software and comes with ABSOLUTELY NO WARRANTY. Licensed
+under the terms of the GNU Lesser General Public License v3.0 (LGPL-3.0).
+
+Enter phone number or bot token: INFO:pyrogram.session.session:PingTask started
+[FTG] starting at Wed Aug 27 00:35:43 CEST 2025
+[FTG] Using detected local FTG repo: /Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo
+[FTG] Using local FTG repo: /Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo
+[FTG] Installing dnspython for Mongo SRV support
+[FTG] Detected Dragon-Userbot (main.py).
+[FTG] Launching Dragon-Userbot with Python Python 3.11.13
+INFO:pyrogram.session.auth:Start creating a new auth key on DC2
+INFO:pyrogram.connection.connection:Connecting...
+INFO:pyrogram.connection.connection:Connected! Production DC2 - IPv4
+INFO:pyrogram.session.auth:Done auth key exchange: DhGenOk
+INFO:pyrogram.connection.connection:Disconnected
+INFO:pyrogram.connection.connection:Connecting...
+INFO:pyrogram.connection.connection:Connected! Production DC2 - IPv4
+INFO:pyrogram.session.session:NetworkTask started
+INFO:pyrogram.session.session:Session initialized: Layer 158
+INFO:pyrogram.session.session:Device: Dragon-Userbot @ ae021e8 - 4.0.1
+INFO:pyrogram.session.session:System: Darwin Kernel Version 25.0.0: Thu Aug 14 21:58:31 PDT 2025; root:xnu-12377.1.8~5/RELEASE_ARM64_T6041 arm64 (en)
+INFO:pyrogram.session.session:Session started
+[run_dragon.py] Applying macOS asyncio policy workaround
+[run_dragon.py] Successfully imported main from Dragon-Userbot
+Welcome to Pyrogram (version 2.0.106)
+Pyrogram is free software and comes with ABSOLUTELY NO WARRANTY. Licensed
+under the terms of the GNU Lesser General Public License v3.0 (LGPL-3.0).
+
+Enter phone number or bot token: INFO:pyrogram.session.session:PingTask started
+INFO:pyrogram.session.session:NetworkTask stopped
+INFO:pyrogram.session.session:PingTask stopped
+INFO:pyrogram.connection.connection:Disconnected
+INFO:pyrogram.session.session:Session stopped
+INFO:pyrogram.connection.connection:Connecting...
+INFO:pyrogram.connection.connection:Connected! Production DC2 - IPv4
+INFO:pyrogram.session.session:NetworkTask started
+INFO:pyrogram.session.session:Session initialized: Layer 158
+INFO:pyrogram.session.session:Device: Dragon-Userbot @ ae021e8 - 4.0.1
+INFO:pyrogram.session.session:System: Darwin Kernel Version 25.0.0: Thu Aug 14 21:58:31 PDT 2025; root:xnu-12377.1.8~5/RELEASE_ARM64_T6041 arm64 (en)
+INFO:pyrogram.session.session:Session started
+INFO:pyrogram.session.session:PingTask started
+INFO:pyrogram.session.session:NetworkTask stopped
+INFO:pyrogram.session.session:PingTask stopped
+INFO:pyrogram.connection.connection:Disconnected
+INFO:pyrogram.session.session:Session stopped
+INFO:pyrogram.connection.connection:Connecting...
+INFO:pyrogram.connection.connection:Connected! Production DC2 - IPv4
+INFO:pyrogram.session.session:NetworkTask started
+INFO:pyrogram.session.session:Session initialized: Layer 158
+INFO:pyrogram.session.session:Device: Dragon-Userbot @ ae021e8 - 4.0.1
+INFO:pyrogram.session.session:System: Darwin Kernel Version 25.0.0: Thu Aug 14 21:58:31 PDT 2025; root:xnu-12377.1.8~5/RELEASE_ARM64_T6041 arm64 (en)
+INFO:pyrogram.session.session:Session started
+INFO:pyrogram.session.session:PingTask started
+INFO:pyrogram.session.session:NetworkTask stopped
+INFO:pyrogram.session.session:PingTask stopped
+INFO:pyrogram.connection.connection:Disconnected
+INFO:pyrogram.session.session:Session stopped
+INFO:pyrogram.connection.connection:Connecting...
+INFO:pyrogram.connection.connection:Connected! Production DC2 - IPv4
+INFO:pyrogram.session.session:NetworkTask started
+INFO:pyrogram.session.session:Session initialized: Layer 158
+INFO:pyrogram.session.session:Device: Dragon-Userbot @ ae021e8 - 4.0.1
+INFO:pyrogram.session.session:System: Darwin Kernel Version 25.0.0: Thu Aug 14 21:58:31 PDT 2025; root:xnu-12377.1.8~5/RELEASE_ARM64_T6041 arm64 (en)
+INFO:pyrogram.session.session:Session started
+INFO:pyrogram.session.session:PingTask started
+INFO:pyrogram.session.session:NetworkTask stopped
+INFO:pyrogram.session.session:PingTask stopped
+INFO:pyrogram.connection.connection:Disconnected
+INFO:pyrogram.session.session:Session stopped
+INFO:pyrogram.connection.connection:Connecting...
+INFO:pyrogram.connection.connection:Connected! Production DC2 - IPv4
+INFO:pyrogram.session.session:NetworkTask started
+INFO:pyrogram.session.session:Session initialized: Layer 158
+INFO:pyrogram.session.session:Device: Dragon-Userbot @ ae021e8 - 4.0.1
+INFO:pyrogram.session.session:System: Darwin Kernel Version 25.0.0: Thu Aug 14 21:58:31 PDT 2025; root:xnu-12377.1.8~5/RELEASE_ARM64_T6041 arm64 (en)
+INFO:pyrogram.session.session:Session started
+INFO:pyrogram.session.session:PingTask started
+INFO:pyrogram.session.session:NetworkTask stopped
+INFO:pyrogram.session.session:PingTask stopped
+INFO:pyrogram.connection.connection:Disconnected
+INFO:pyrogram.session.session:Session stopped
+INFO:pyrogram.connection.connection:Connecting...
+INFO:pyrogram.connection.connection:Connected! Production DC2 - IPv4
+INFO:pyrogram.session.session:NetworkTask started
+INFO:pyrogram.session.session:Session initialized: Layer 158
+INFO:pyrogram.session.session:Device: Dragon-Userbot @ ae021e8 - 4.0.1
+INFO:pyrogram.session.session:System: Darwin Kernel Version 25.0.0: Thu Aug 14 21:58:31 PDT 2025; root:xnu-12377.1.8~5/RELEASE_ARM64_T6041 arm64 (en)
+INFO:pyrogram.session.session:Session started
+INFO:pyrogram.session.session:PingTask started
+INFO:pyrogram.session.session:NetworkTask stopped
+INFO:pyrogram.session.session:PingTask stopped
+INFO:pyrogram.connection.connection:Disconnected
+INFO:pyrogram.session.session:Session stopped
+INFO:pyrogram.connection.connection:Connecting...
+INFO:pyrogram.connection.connection:Connected! Production DC2 - IPv4
+INFO:pyrogram.session.session:NetworkTask started
+INFO:pyrogram.session.session:Session initialized: Layer 158
+INFO:pyrogram.session.session:Device: Dragon-Userbot @ ae021e8 - 4.0.1
+INFO:pyrogram.session.session:System: Darwin Kernel Version 25.0.0: Thu Aug 14 21:58:31 PDT 2025; root:xnu-12377.1.8~5/RELEASE_ARM64_T6041 arm64 (en)
+INFO:pyrogram.session.session:Session started
+INFO:pyrogram.session.session:PingTask started
+INFO:pyrogram.session.session:NetworkTask stopped
+INFO:pyrogram.session.session:PingTask stopped
+INFO:pyrogram.connection.connection:Disconnected
+INFO:pyrogram.session.session:Session stopped
+INFO:pyrogram.connection.connection:Connecting...
+INFO:pyrogram.connection.connection:Connected! Production DC2 - IPv4
+INFO:pyrogram.session.session:NetworkTask started
+INFO:pyrogram.session.session:Session initialized: Layer 158
+INFO:pyrogram.session.session:Device: Dragon-Userbot @ ae021e8 - 4.0.1
+INFO:pyrogram.session.session:System: Darwin Kernel Version 25.0.0: Thu Aug 14 21:58:31 PDT 2025; root:xnu-12377.1.8~5/RELEASE_ARM64_T6041 arm64 (en)
+INFO:pyrogram.session.session:Session started
+INFO:pyrogram.session.session:PingTask started
+[FTG] starting at Wed Aug 27 15:09:16 CEST 2025
+[FTG] Using detected local FTG repo: /Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo
+[FTG] Using local FTG repo: /Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo
+[FTG] Installing dnspython for Mongo SRV support
+[FTG] Detected Dragon-Userbot (main.py).
+[FTG] Launching Dragon-Userbot with Python Python 3.11.13
+INFO:pyrogram.session.auth:Start creating a new auth key on DC2
+INFO:pyrogram.connection.connection:Connecting...
+INFO:pyrogram.connection.connection:Connected! Production DC2 - IPv4
+INFO:pyrogram.session.auth:Done auth key exchange: DhGenOk
+INFO:pyrogram.connection.connection:Disconnected
+INFO:pyrogram.connection.connection:Connecting...
+INFO:pyrogram.connection.connection:Connected! Production DC2 - IPv4
+INFO:pyrogram.session.session:NetworkTask started
+INFO:pyrogram.session.session:Session initialized: Layer 158
+INFO:pyrogram.session.session:Device: Dragon-Userbot @ ae021e8 - 4.0.1
+INFO:pyrogram.session.session:System: Darwin Kernel Version 25.0.0: Thu Aug 14 21:58:31 PDT 2025; root:xnu-12377.1.8~5/RELEASE_ARM64_T6041 arm64 (en)
+INFO:pyrogram.session.session:Session started
+[run_dragon.py] Loaded .env via python-dotenv
+[run_dragon.py] Applying macOS asyncio policy workaround
+[run_dragon.py] Successfully imported main from Dragon-Userbot
+Welcome to Pyrogram (version 2.0.106)
+Pyrogram is free software and comes with ABSOLUTELY NO WARRANTY. Licensed
+under the terms of the GNU Lesser General Public License v3.0 (LGPL-3.0).
+
+Enter phone number or bot token: 

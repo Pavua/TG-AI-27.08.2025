@@ -1,0 +1,341 @@
+import SwiftUI
+
+@main
+struct FTGCompanionApp: App {
+    var body: some Scene {
+        WindowGroup {
+            MainView()
+        }.windowStyle(.automatic)
+    }
+}
+
+struct MainView: View {
+    var body: some View {
+        TabView {
+            DashboardView()
+                .tabItem { Label("Dashboard", systemImage: "speedometer") }
+
+            AISettingsView()
+                .tabItem { Label("AI Settings", systemImage: "brain.head.profile") }
+
+            WebPanelView(urlString: "http://192.168.0.171:1234")
+                .tabItem { Label("Web Panel", systemImage: "globe") }
+
+            LogsView()
+                .tabItem { Label("Logs", systemImage: "doc.text.magnifyingglass") }
+
+            ShortcutsView()
+                .tabItem { Label("Shortcuts", systemImage: "bolt.fill") }
+
+            MessagesView()
+                .tabItem { Label("Messages", systemImage: "paperplane.fill") }
+
+            ServerSettingsView()
+                .tabItem { Label("Server", systemImage: "lock.shield") }
+        }
+        .frame(minWidth: 900, minHeight: 600)
+    }
+}
+
+final class ControlClient {
+    static let shared = ControlClient()
+    private init() {}
+
+    private let baseURL = URL(string: "http://127.0.0.1:8787")!
+    private var token: String { Keychain.get("FTGControlToken") ?? UserDefaults.standard.string(forKey: "FTGControlToken") ?? "changeme_local_token" }
+
+    func getHealth() async throws -> (status: String, ftg: String) {
+        var req = URLRequest(url: baseURL.appendingPathComponent("/health"))
+        req.addValue(token, forHTTPHeaderField: "X-FTG-Token")
+        let (data, resp) = try await URLSession.shared.data(for: req)
+        guard let http = resp as? HTTPURLResponse, http.statusCode == 200 else { throw URLError(.badServerResponse) }
+        let obj = try JSONSerialization.jsonObject(with: data) as? [String: Any]
+        let status = obj?["status"] as? String ?? ""
+        let ftg = obj?["ftg"] as? String ?? ""
+        return (status, ftg)
+    }
+}
+
+struct DashboardView: View {
+    @State private var status: String = "unknown"
+    @State private var ftg: String = "unknown"
+    @State private var loading = false
+    @State private var ftgRunning = false
+    @State private var actionInProgress = false
+    @State private var lastActionMessage: String = ""
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack {
+                Text("Status: ") + Text(status).bold()
+                Text("FTG: ") + Text(ftg).bold()
+                Spacer()
+                Button(loading ? "Loading…" : "Refresh") { Task { await refresh() } }
+                    .disabled(loading)
+            }
+            HStack(spacing: 12) {
+                Button(actionInProgress ? "Starting…" : "Start") { Task { await execAction("start") } }
+                    .disabled(ftgRunning || actionInProgress)
+                Button(actionInProgress ? "Stopping…" : "Stop") { Task { await execAction("stop") } }
+                    .disabled(!ftgRunning || actionInProgress)
+                Button(actionInProgress ? "Restarting…" : "Restart") { Task { await execAction("restart") } }
+                    .disabled(actionInProgress)
+                Button("Status") { Task { await execAction("status") } }
+            }
+            Divider()
+            if actionInProgress { ProgressView().controlSize(.small) }
+            if !lastActionMessage.isEmpty { Text(lastActionMessage).font(.caption).foregroundStyle(.secondary) }
+            Spacer()
+        }
+        .padding()
+        .task { await loop() }
+    }
+
+    private func refresh() async {
+        loading = true
+        defer { loading = false }
+        do {
+            let res = try await ControlClient.shared.getHealth()
+            status = res.status
+            ftg = res.ftg
+            // probe status via /exec
+            if let url = URL(string: "http://127.0.0.1:8787/exec"),
+               let token = UserDefaults.standard.string(forKey: "FTGControlToken") ?? "changeme_local_token" as String? {
+                var req = URLRequest(url: url)
+                req.httpMethod = "POST"
+                req.addValue(Keychain.get("FTGControlToken") ?? token, forHTTPHeaderField: "X-FTG-Token")
+                req.addValue("application/json", forHTTPHeaderField: "Content-Type")
+                req.httpBody = try? JSONSerialization.data(withJSONObject: ["action":"status"]) 
+                let (data, _) = try await URLSession.shared.data(for: req)
+                if let obj = try JSONSerialization.jsonObject(with: data) as? [String: Any] {
+                    self.ftgRunning = (obj["running"] as? Bool) ?? false
+                }
+            }
+        } catch {
+            status = "error"
+            ftg = "unknown"
+        }
+    }
+
+    private func execAction(_ action: String) async {
+        guard let url = URL(string: "http://127.0.0.1:8787/exec") else { return }
+        actionInProgress = true
+        defer { actionInProgress = false }
+        var req = URLRequest(url: url)
+        req.httpMethod = "POST"
+        req.addValue(Keychain.get("FTGControlToken") ?? UserDefaults.standard.string(forKey: "FTGControlToken") ?? "changeme_local_token", forHTTPHeaderField: "X-FTG-Token")
+        req.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        req.httpBody = try? JSONSerialization.data(withJSONObject: ["action": action])
+        req.timeoutInterval = 8
+        do {
+            let (data, _) = try await URLSession.shared.data(for: req)
+            if let obj = try JSONSerialization.jsonObject(with: data) as? [String: Any], let ok = obj["ok"] as? Bool {
+                lastActionMessage = ok ? "Action \(action) OK" : (obj["error"] as? String ?? "Action failed")
+            } else { lastActionMessage = "Action \(action) sent" }
+            await refresh()
+        } catch {
+            lastActionMessage = "Action \(action) error: \(error.localizedDescription)"
+        }
+    }
+
+    private func loop() async {
+        while true {
+            await refresh()
+            try? await Task.sleep(nanoseconds: 2_000_000_000)
+        }
+    }
+}
+
+struct AISettingsView: View {
+    @State private var providers: [[String: Any]] = []
+    @State private var selectedBaseURL: String = "http://127.0.0.1:1234/v1"
+    @State private var model: String = "gpt-oss:latest"
+    @State private var apiKey: String = (Keychain.get("LLM_API_KEY") ?? "")
+    @State private var prompt = "Hello"
+    @State private var output = ""
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                Button("Load Providers") { Task { await loadProviders() } }
+                Button("Apply Config") { Task { await applyConfig() } }
+                Button("Save Key") { _ = Keychain.set(apiKey, for: "LLM_API_KEY") }
+            }
+            TextField("Base URL", text: $selectedBaseURL)
+            TextField("Model", text: $model)
+            SecureField("API Key (optional)", text: $apiKey)
+            TextField("Test prompt", text: $prompt)
+            HStack {
+                Button("Test /llm/chat") { Task { await runTest() } }
+            }
+            ScrollView { Text(output).frame(maxWidth: .infinity, alignment: .leading) }
+            Spacer()
+        }.padding()
+    }
+
+    private func runTest() async {
+        guard let url = URL(string: "http://127.0.0.1:8787/llm/chat") else { return }
+        var req = URLRequest(url: url)
+        req.httpMethod = "POST"
+        req.addValue(Keychain.get("FTGControlToken") ?? UserDefaults.standard.string(forKey: "FTGControlToken") ?? "changeme_local_token", forHTTPHeaderField: "X-FTG-Token")
+        req.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        let body: [String: Any] = ["prompt": prompt]
+        req.httpBody = try? JSONSerialization.data(withJSONObject: body)
+        do {
+            let (data, _) = try await URLSession.shared.data(for: req)
+            output = String(data: data, encoding: .utf8) ?? ""
+        } catch {
+            output = "Error: \(error.localizedDescription)"
+        }
+    }
+
+    private func loadProviders() async {
+        guard let url = URL(string: "http://127.0.0.1:8787/llm/providers") else { return }
+        var req = URLRequest(url: url)
+        req.addValue(UserDefaults.standard.string(forKey: "FTGControlToken") ?? "changeme_local_token", forHTTPHeaderField: "X-FTG-Token")
+        do {
+            let (data, _) = try await URLSession.shared.data(for: req)
+            if let obj = try JSONSerialization.jsonObject(with: data) as? [String: Any] {
+                providers = (obj["providers"] as? [[String: Any]]) ?? []
+                if let first = providers.first, let url = first["base_url"] as? String { selectedBaseURL = url }
+            }
+        } catch {}
+    }
+
+    private func applyConfig() async {
+        guard let url = URL(string: "http://127.0.0.1:8787/llm/config") else { return }
+        var req = URLRequest(url: url)
+        req.httpMethod = "POST"
+        req.addValue(UserDefaults.standard.string(forKey: "FTGControlToken") ?? "changeme_local_token", forHTTPHeaderField: "X-FTG-Token")
+        req.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        var payload: [String: Any] = [
+            "base_url": selectedBaseURL,
+            "model": model
+        ]
+        if !apiKey.isEmpty { payload["api_key"] = apiKey }
+        req.httpBody = try? JSONSerialization.data(withJSONObject: payload)
+        do { _ = try await URLSession.shared.data(for: req) } catch {}
+    }
+}
+
+import WebKit
+
+struct WebPanelView: NSViewRepresentable {
+    let urlString: String
+    func makeNSView(context: Context) -> WKWebView {
+        let v = WKWebView()
+        if let url = URL(string: urlString) { v.load(URLRequest(url: url)) }
+        return v
+    }
+    func updateNSView(_ nsView: WKWebView, context: Context) {}
+}
+
+struct LogsView: View {
+    @State private var lines: [String] = []
+    @State private var autoRefresh = true
+    var body: some View {
+        VStack(alignment: .leading) {
+            HStack {
+                Button("Refresh") { Task { await refresh() } }
+                Toggle("Auto refresh", isOn: $autoRefresh).toggleStyle(.switch)
+                Button("Copy") { NSPasteboard.general.clearContents(); NSPasteboard.general.setString(lines.joined(separator: "\n"), forType: .string) }
+                Spacer()
+            }
+            Divider()
+            ScrollView {
+                LazyVStack(alignment: .leading, spacing: 2) {
+                    ForEach(lines.indices, id: \.self) { i in
+                        Text(lines[i]).font(.system(size: 12, design: .monospaced))
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                }
+            }
+        }.padding().task { await loop() }
+    }
+    private func loop() async {
+        while true {
+            if autoRefresh { await refresh() }
+            try? await Task.sleep(nanoseconds: 1_000_000_000)
+        }
+    }
+    private func refresh() async {
+        guard let url = URL(string: "http://127.0.0.1:8787/logs/tail?lines=200") else { return }
+        var req = URLRequest(url: url)
+        req.addValue(Keychain.get("FTGControlToken") ?? UserDefaults.standard.string(forKey: "FTGControlToken") ?? "changeme_local_token", forHTTPHeaderField: "X-FTG-Token")
+        do {
+            let (data, _) = try await URLSession.shared.data(for: req)
+            if let obj = try JSONSerialization.jsonObject(with: data) as? [String: Any] {
+                self.lines = (obj["lines"] as? [String]) ?? []
+            }
+        } catch {
+            self.lines = ["Error: \(error.localizedDescription)"]
+        }
+    }
+}
+
+struct ShortcutsView: View {
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Quick actions via /exec will appear here.")
+            Spacer()
+        }.padding()
+    }
+}
+
+struct MessagesView: View {
+    @State private var chat: String = "me"
+    @State private var text: String = "Hello from FTG"
+    @State private var result: String = ""
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            TextField("Chat (username or ID)", text: $chat)
+            TextField("Text", text: $text)
+            HStack {
+                Button("Send") { Task { await send() } }
+            }
+            ScrollView { Text(result).frame(maxWidth: .infinity, alignment: .leading) }
+            Spacer()
+        }.padding()
+    }
+    private func send() async {
+        guard let url = URL(string: "http://127.0.0.1:8787/send_message") else { return }
+        var req = URLRequest(url: url)
+        req.httpMethod = "POST"
+        req.addValue(UserDefaults.standard.string(forKey: "FTGControlToken") ?? "changeme_local_token", forHTTPHeaderField: "X-FTG-Token")
+        req.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        req.httpBody = try? JSONSerialization.data(withJSONObject: ["chat": chat, "text": text])
+        do {
+            let (data, _) = try await URLSession.shared.data(for: req)
+            result = String(data: data, encoding: .utf8) ?? ""
+        } catch {
+            result = "Error: \(error.localizedDescription)"
+        }
+    }
+}
+
+struct ServerSettingsView: View {
+    @State private var token: String = Keychain.get("FTGControlToken") ?? UserDefaults.standard.string(forKey: "FTGControlToken") ?? ""
+    @State private var pingResult: String = ""
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("FTG Control Server Token").font(.headline)
+            SecureField("Enter FTG control token", text: $token)
+                .textFieldStyle(.roundedBorder)
+            HStack(spacing: 12) {
+                Button("Save Token") {
+                    _ = Keychain.set(token, for: "FTGControlToken")
+                    UserDefaults.standard.set(token, forKey: "FTGControlToken")
+                }
+                Button("Ping /health") { Task { await ping() } }
+            }
+            if !pingResult.isEmpty { Text(pingResult).font(.caption).foregroundStyle(.secondary) }
+            Spacer()
+        }.padding()
+    }
+    private func ping() async {
+        do {
+            let res = try await ControlClient.shared.getHealth()
+            pingResult = "Health: \(res.status), FTG: \(res.ftg)"
+        } catch {
+            pingResult = "Ping failed: \(error.localizedDescription)"
+        }
+    }
+}

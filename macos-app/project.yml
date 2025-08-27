@@ -1,0 +1,11 @@
+name: FTG Companion
+targets:
+  FTG Companion:
+    type: application
+    platform: macOS
+    deploymentTarget: "14.0"
+    sources:
+      - Sources
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: com.example.ftgcompanion
+      INFOPLIST_FILE: Sources/Info.plist
