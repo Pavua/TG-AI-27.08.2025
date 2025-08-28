@@ -1,34 +1,34 @@
-# 200 features (skeleton)
-1. Feature placeholder
-2. Feature placeholder
-3. Feature placeholder
-4. Feature placeholder
-5. Feature placeholder
-6. Feature placeholder
-7. Feature placeholder
-8. Feature placeholder
-9. Feature placeholder
-10. Feature placeholder
-11. Feature placeholder
-12. Feature placeholder
-13. Feature placeholder
-14. Feature placeholder
-15. Feature placeholder
-16. Feature placeholder
-17. Feature placeholder
-18. Feature placeholder
-19. Feature placeholder
-20. Feature placeholder
-21. Feature placeholder
-22. Feature placeholder
-23. Feature placeholder
-24. Feature placeholder
-25. Feature placeholder
-26. Feature placeholder
-27. Feature placeholder
-28. Feature placeholder
-29. Feature placeholder
-30. Feature placeholder
+# 200 must‑have фич для TG‑AI suite (1–10 приоритет)
+1. GUI: редактируемый Web Panel URL, сохранение, проверка доступности — 9
+2. GUI: тост‑уведомления для Start/Stop/Restart/Send — 9
+3. GUI: индикатор статуса юзербота в реальном времени — 9
+4. GUI: выбор модели из /v1/models (dropdown) — 9
+5. GUI: настройка таймаута LLM (15–120s) — 8
+6. GUI: отображение времени ответа LLM — 8
+7. GUI: сохранение LLM ключей в Keychain только (без UserDefaults) — 10
+8. GUI: кнопка Open ftg.log в Finder — 7
+9. GUI: копирование JSON‑ответов (форматированный вывод) — 6
+10. GUI: отправка файлов/медиа из Messages — 8
+11. GUI: предпросмотр последних сообщений чата (read‑only) — 8
+12. GUI: настройка автозапуска юзербота (LaunchAgent toggle) — 10
+13. GUI: Login Item для приложения (SMAppService) — 9
+14. GUI: Shortcuts действия (Start/Stop/Send/LLM chat) — 8
+15. GUI: светлая/тёмная тема, следование системной — 5
+16. GUI: всплывающие подсказки по полям (Help) — 5
+17. GUI: быстрый тест соединения к БД Mongo — 7
+18. GUI: мультипровайдер LLM (OpenAI/Groq/OpenRouter) — 9
+19. GUI: валидатор .env (проверка критичных переменных) — 8
+20. GUI: экспорт/импорт настроек в JSON (без секретов) — 6
+21. Control: `/exec/logs?since=` для инкрементального таила — 7
+22. Control: `/metrics` (время ответа, кол‑во запросов) — 6
+23. Control: `/llm/models` кэш на 60с — 6
+24. Control: лимиты на parallel LLM запросы — 8
+25. Control: защита от повторных Start — 7
+26. Control: Graceful Stop с таймаутом 10с — 7
+27. Control: перезапуск по крэшу (watchdog) — 8
+28. Control: unified error codes (machine‑readable) — 7
+29. Control: валидация chat в /send_message — 6
+30. Control: rate limit пер‑IP — 7
 31. Feature placeholder
 32. Feature placeholder
 33. Feature placeholder
