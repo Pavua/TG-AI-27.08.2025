@@ -13,6 +13,7 @@ from typing import Deque, Dict, Optional, Any
 
 from fastapi import Depends, FastAPI, Header, HTTPException, Query, Request
 from fastapi.responses import JSONResponse
+from fastapi.responses import HTMLResponse
 
 from ..utils.config import (
     get_security_config,
@@ -81,6 +82,64 @@ async def root(_: str = Depends(require_token)):
     return {"name": "FTG Control Server", "status": "ok"}
 
 
+_UI_HTML = """
+<!doctype html>
+<html lang=\"ru\">
+  <head>
+    <meta charset=\"utf-8\" />
+    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />
+    <title>FTG Companion — Web Panel</title>
+    <style>
+      body { font-family: -apple-system, system-ui, sans-serif; margin: 16px; }
+      input, button, select, textarea { font: inherit; padding: 6px 8px; }
+      .row { margin: 8px 0; }
+      .mono { font-family: ui-monospace, Menlo, Consolas, monospace; white-space: pre-wrap; }
+    </style>
+  </head>
+  <body>
+    <h2>FTG Companion — Web Panel</h2>
+    <div class=\"row\">
+      <label>Token: <input id=\"token\" type=\"password\" placeholder=\"X-FTG-Token\" /></label>
+      <button onclick=\"saveToken()\">Save</button>
+    </div>
+    <hr>
+    <h3>Exec</h3>
+    <div class=\"row\">
+      <button onclick=\"execAction('status')\">Status</button>
+      <button onclick=\"execAction('start')\">Start</button>
+      <button onclick=\"execAction('stop')\">Stop</button>
+      <button onclick=\"execAction('restart')\">Restart</button>
+    </div>
+    <div id=\"execOut\" class=\"mono\"></div>
+    <hr>
+    <h3>LLM Test</h3>
+    <div class=\"row\"><textarea id=\"prompt\" rows=\"3\" style=\"width:100%\" placeholder=\"Hello\"></textarea></div>
+    <div class=\"row\"><button onclick=\"testLLM()\">/llm/chat</button></div>
+    <div id=\"llmOut\" class=\"mono\"></div>
+    <script>
+      const $ = (id) => document.getElementById(id);
+      const tokenKey = 'FTGControlToken';
+      $('token').value = localStorage.getItem(tokenKey) || '';
+      function saveToken(){ localStorage.setItem(tokenKey, $('token').value); }
+      async function execAction(a){
+        const r = await fetch('/exec', { method:'POST', headers: { 'Content-Type':'application/json', 'X-FTG-Token': localStorage.getItem(tokenKey)||'' }, body: JSON.stringify({action:a}) });
+        $('execOut').textContent = await r.text();
+      }
+      async function testLLM(){
+        const r = await fetch('/llm/chat', { method:'POST', headers: { 'Content-Type':'application/json', 'X-FTG-Token': localStorage.getItem(tokenKey)||'' }, body: JSON.stringify({prompt: $('prompt').value}) });
+        $('llmOut').textContent = await r.text();
+      }
+    </script>
+  </body>
+  </html>
+"""
+
+
+@app.get("/ui")
+async def web_panel(_: str = Depends(require_token)):
+    return HTMLResponse(content=_UI_HTML)
+
+
 _ROOT_DIR = Path(__file__).resolve().parents[2]
 _PID_FILE = _ROOT_DIR / "ftg/ftg_runner.pid"
 
@@ -143,8 +202,7 @@ async def _auto_reply_loop(stop_event: asyncio.Event):
         device_model="FTG-Companion-Auto",
     )  # type: ignore
 
-    allow_set = set(str(x) for x in (cfg.allowlist_chats or ()))
-    block_set = set(str(x) for x in (cfg.blocklist_chats or ()))
+    # note: allow/block set пересчитываем при каждом событии, чтобы ловить новые настройки
 
     def _chat_in_list(chat: Any, lst: set[str]) -> bool:
         if not chat:
@@ -172,19 +230,6 @@ async def _auto_reply_loop(stop_event: asyncio.Event):
 
         if not cfg.auto_reply_enabled:
             return
-
-        # allow/block filtering
-        if allow_set and not _chat_in_list(message.chat, allow_set):
-            return
-        if block_set and _chat_in_list(message.chat, block_set):
-            return
-
-        # mode filtering
-        if cfg.auto_reply_mode == "off":
-            return
-        if cfg.auto_reply_mode == "mentions_only":
-            if not (message.mentioned or (message.text and client.me and (getattr(client.me, "username", None) or "") in message.text)):
-                return
 
         # rate limiting per chat
         chat_id = int(getattr(message.chat, "id", 0) or 0)
@@ -216,7 +261,18 @@ async def _auto_reply_loop(stop_event: asyncio.Event):
                 prompt_text = user_text[len(pfx):].strip()
                 break
         if prompt_text is None:
-            # generic auto-reply
+            # Команды не найдены — применяем allow/block и режим
+            allow_set = set(str(x) for x in (cfg.allowlist_chats or ()))
+            block_set = set(str(x) for x in (cfg.blocklist_chats or ()))
+            if block_set and _chat_in_list(message.chat, block_set):
+                return
+            if allow_set and not _chat_in_list(message.chat, allow_set):
+                return
+            if cfg.auto_reply_mode == "off":
+                return
+            if cfg.auto_reply_mode == "mentions_only":
+                if not (message.mentioned or (message.text and client.me and (getattr(client.me, "username", None) or "") in message.text)):
+                    return
             prompt_text = user_text
 
         try:

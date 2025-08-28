@@ -225,7 +225,7 @@ struct AISettingsView: View {
 import WebKit
 
 struct WebPanelContainer: View {
-    @State private var urlText: String = UserDefaults.standard.string(forKey: "WebPanelURL") ?? "http://192.168.0.171:1234"
+    @State private var urlText: String = UserDefaults.standard.string(forKey: "WebPanelURL") ?? "http://127.0.0.1:8787/ui"
     var body: some View {
         VStack(spacing: 8) {
             HStack(spacing: 8) {
