@@ -27,6 +27,7 @@ Acceptance:
 - AI Settings: choose provider/model via /llm/config (OpenAI, Groq, LM Studio, …)
 - Logs: tail, search, copy
 - Web Panel: embedded (LM Studio UI at http://192.168.0.171:1234)
+- Bot Settings: тумблеры и параметры автоответчика (невидимое чтение, allow/block list)
 
 Acceptance:
 - Все основные операции доступны из GUI без терминала
@@ -54,6 +55,7 @@ Acceptance:
 - [x] Web Panel: temporary LM Studio UI
 - [x] Messages: send via Pyrogram (session string), no interactive prompts
 - [ ] GUI: Status/Restart/Stop robust UX (spinners, toasts)
+- [ ] GUI: Bot Settings – управление автоответчиком и списками чатов
 - [ ] GUI: Web Panel URL editable, error banner on load failure
 - [ ] GUI: AI Settings – dropdown from /models, timeout slider, latency stats
 - [ ] Security: store FTG_CONTROL_TOKEN & LLM_API_KEY only in Keychain; scrub defaults
