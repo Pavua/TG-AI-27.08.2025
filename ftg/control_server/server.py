@@ -176,6 +176,17 @@ def _write_pid(pid: int) -> None:
     _PID_FILE.write_text(str(pid))
 
 
+def _kill_process_tree(pid: int) -> None:
+    """Best-effort terminate the spawned process group."""
+    try:
+        pgid = os.getpgid(pid)
+        with contextlib.suppress(Exception):
+            os.killpg(pgid, signal.SIGTERM)
+    except Exception:
+        with contextlib.suppress(Exception):
+            os.kill(pid, signal.SIGTERM)
+
+
 async def _auto_reply_loop(stop_event: asyncio.Event):
     try:
         from pyrogram import Client, filters  # type: ignore
@@ -297,7 +308,8 @@ async def _auto_reply_loop(stop_event: asyncio.Event):
 def _ensure_auto_worker() -> None:
     global _auto_worker_task, _auto_worker_should_stop
     cfg = get_bot_config()
-    should_run = bool(cfg.auto_reply_enabled)
+    # Do not run our own Pyrogram client if FTG process is running to avoid session conflicts
+    should_run = bool(cfg.auto_reply_enabled) and not bool(_read_pid())
     is_running = _auto_worker_task is not None and not _auto_worker_task.done()
     if should_run and not is_running:
         _auto_worker_should_stop = asyncio.Event()
@@ -339,10 +351,15 @@ def _stop_ftg() -> Dict[str, str | bool]:
     pid = _read_pid()
     if not pid:
         return {"ok": False, "error": "not_running"}
-    try:
-        os.kill(pid, signal.SIGTERM)
-    except Exception:
-        pass
+    _kill_process_tree(pid)
+    # Wait up to 10s for graceful stop
+    for _ in range(100):
+        if not _is_pid_alive(pid):
+            break
+        time.sleep(0.1)
+    if _PID_FILE.exists() and not _is_pid_alive(pid):
+        with contextlib.suppress(Exception):
+            _PID_FILE.unlink()
     return {"ok": True, "stopped": True}
 
 
@@ -352,13 +369,19 @@ async def exec_action(payload: ExecRequest, _: str = Depends(require_token)):
     if action == "status":
         return {"ok": True, "running": bool(_read_pid())}
     if action == "start":
-        return _start_ftg()
+        res = _start_ftg()
+        _ensure_auto_worker()
+        return res
     if action == "stop":
-        return _stop_ftg()
+        res = _stop_ftg()
+        _ensure_auto_worker()
+        return res
     if action == "restart":
         _stop_ftg()
         time.sleep(0.5)
-        return _start_ftg()
+        res = _start_ftg()
+        _ensure_auto_worker()
+        return res
     return {"ok": False, "error": "unknown_action"}
 
 

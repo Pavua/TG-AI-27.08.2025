@@ -28,7 +28,7 @@ struct MainView: View {
                 AISettingsView(appLang: appLang)
                     .tabItem { Label(appLang == "ru" ? "ИИ" : "AI Settings", systemImage: "brain.head.profile") }
 
-                WebPanelContainer()
+                WebPanelContainer(appLang: appLang)
                     .tabItem { Label(appLang == "ru" ? "Веб" : "Web Panel", systemImage: "globe") }
 
                 LogsView(appLang: appLang)
