@@ -196,8 +196,31 @@ async def _auto_reply_loop(stop_event: asyncio.Event):
         user_text = message.text or message.caption or ""
         if not user_text.strip():
             return
+
+        # built-in commands (рус./англ.)
+        text_lower = user_text.strip().lower()
+        if text_lower in (".ping", "/ping", "пинг"):
+            await message.reply_text("pong", quote=True)
+            _auto_worker_last_reply_at[chat_id] = now
+            return
+        if text_lower.startswith(".help") or text_lower == "/help" or text_lower == "помощь":
+            await message.reply_text("Доступные команды: .ai <текст>, .sum, .tr ru|en|es|uk <текст>, .ping", quote=True)
+            _auto_worker_last_reply_at[chat_id] = now
+            return
+
+        # .ai and variations trigger LLM directly
+        ai_prefixes = (".ai ", "/ai ", "аи ")
+        prompt_text = None
+        for pfx in ai_prefixes:
+            if user_text.startswith(pfx):
+                prompt_text = user_text[len(pfx):].strip()
+                break
+        if prompt_text is None:
+            # generic auto-reply
+            prompt_text = user_text
+
         try:
-            reply = await llm_chat(prompt=user_text, system=(cfg.reply_prompt or None))
+            reply = await llm_chat(prompt=prompt_text, system=(cfg.reply_prompt or None))
             if reply.strip():
                 await message.reply_text(reply, quote=True)
                 _auto_worker_last_reply_at[chat_id] = now

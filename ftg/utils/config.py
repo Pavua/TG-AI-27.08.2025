@@ -19,7 +19,7 @@ class LLMConfig:
     api_key: Optional[str] = os.getenv("LLM_API_KEY") or None
     temperature: float = float(os.getenv("LLM_TEMPERATURE", "0.5"))
     max_tokens: int = int(os.getenv("LLM_MAX_TOKENS", "1024"))
-    request_timeout_seconds: float = float(os.getenv("LLM_REQUEST_TIMEOUT", "30"))
+    request_timeout_seconds: float = float(os.getenv("LLM_REQUEST_TIMEOUT", "60"))
 
 
 @dataclass(frozen=True)

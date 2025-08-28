@@ -18,7 +18,7 @@ struct MainView: View {
             AISettingsView()
                 .tabItem { Label("AI Settings", systemImage: "brain.head.profile") }
 
-            WebPanelView(urlString: "http://192.168.0.171:1234")
+            WebPanelContainer()
                 .tabItem { Label("Web Panel", systemImage: "globe") }
 
             LogsView()
@@ -153,6 +153,7 @@ struct AISettingsView: View {
     @State private var selectedBaseURL: String = "http://127.0.0.1:1234/v1"
     @State private var model: String = "gpt-oss:latest"
     @State private var apiKey: String = (Keychain.get("LLM_API_KEY") ?? "")
+    @State private var timeout: String = "60"
     @State private var prompt = "Hello"
     @State private var output = ""
     var body: some View {
@@ -165,6 +166,7 @@ struct AISettingsView: View {
             TextField("Base URL", text: $selectedBaseURL)
             TextField("Model", text: $model)
             SecureField("API Key (optional)", text: $apiKey)
+            TextField("Request timeout seconds", text: $timeout)
             TextField("Test prompt", text: $prompt)
             HStack {
                 Button("Test /llm/chat") { Task { await runTest() } }
@@ -211,7 +213,8 @@ struct AISettingsView: View {
         req.addValue("application/json", forHTTPHeaderField: "Content-Type")
         var payload: [String: Any] = [
             "base_url": selectedBaseURL,
-            "model": model
+            "model": model,
+            "request_timeout_seconds": Int(timeout) ?? 60
         ]
         if !apiKey.isEmpty { payload["api_key"] = apiKey }
         req.httpBody = try? JSONSerialization.data(withJSONObject: payload)
@@ -221,14 +224,34 @@ struct AISettingsView: View {
 
 import WebKit
 
+struct WebPanelContainer: View {
+    @State private var urlText: String = UserDefaults.standard.string(forKey: "WebPanelURL") ?? "http://192.168.0.171:1234"
+    var body: some View {
+        VStack(spacing: 8) {
+            HStack(spacing: 8) {
+                TextField("Web URL", text: $urlText)
+                Button("Open") {
+                    UserDefaults.standard.set(urlText, forKey: "WebPanelURL")
+                }
+            }
+            Divider()
+            WebPanelView(urlString: urlText)
+        }.padding()
+    }
+}
+
 struct WebPanelView: NSViewRepresentable {
-    let urlString: String
+    var urlString: String
     func makeNSView(context: Context) -> WKWebView {
         let v = WKWebView()
         if let url = URL(string: urlString) { v.load(URLRequest(url: url)) }
         return v
     }
-    func updateNSView(_ nsView: WKWebView, context: Context) {}
+    func updateNSView(_ nsView: WKWebView, context: Context) {
+        if let url = URL(string: urlString) {
+            nsView.load(URLRequest(url: url))
+        }
+    }
 }
 
 struct LogsView: View {
