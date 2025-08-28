@@ -65,6 +65,9 @@ async def chat(
         "max_tokens": int(max_tokens if max_tokens is not None else cfg.max_tokens),
         "temperature": float(temperature if temperature is not None else cfg.temperature),
         "stream": False,
+        # Hint models/tooling runtimes (e.g., LM Studio) that tools may be used
+        "tool_choice": "auto",
+        "parallel_tool_calls": True,
     }
 
     headers: Dict[str, str] = {}

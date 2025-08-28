@@ -43,6 +43,11 @@ class BotConfig:
     silent_reading: bool = (os.getenv("BOT_SILENT_READING", "1") == "1")
     min_reply_interval_seconds: int = int(os.getenv("BOT_MIN_REPLY_INTERVAL", "5"))
     reply_prompt: str = os.getenv("BOT_REPLY_PROMPT", "")
+    # Humanize options
+    humanize_typing_enabled: bool = (os.getenv("BOT_HUMANIZE_TYPING", "1") == "1")
+    typing_min_ms: int = int(os.getenv("BOT_TYPING_MIN_MS", "800"))
+    typing_max_ms: int = int(os.getenv("BOT_TYPING_MAX_MS", "2500"))
+    typo_rate: float = float(os.getenv("BOT_TYPO_RATE", "0.0"))
 
 
 _BOT_CONFIG: BotConfig = BotConfig()

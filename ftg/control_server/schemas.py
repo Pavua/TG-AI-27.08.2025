@@ -48,3 +48,7 @@ class BotConfigPayload(BaseModel):
     silent_reading: Optional[bool] = None
     min_reply_interval_seconds: Optional[int] = Field(default=None, ge=0)
     reply_prompt: Optional[str] = None
+    humanize_typing_enabled: Optional[bool] = None
+    typing_min_ms: Optional[int] = Field(default=None, ge=0)
+    typing_max_ms: Optional[int] = Field(default=None, ge=0)
+    typo_rate: Optional[float] = Field(default=None, ge=0.0, le=1.0)

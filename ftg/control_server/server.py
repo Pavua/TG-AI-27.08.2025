@@ -231,7 +231,7 @@ async def _auto_reply_loop(stop_event: asyncio.Event):
             candidates.append(str(title))
         return any(c in lst for c in candidates)
 
-    @app.on_message(filters.incoming)
+    @app.on_message(filters.text)
     async def handler(client, message):  # type: ignore
         nonlocal cfg
         # reload latest cfg periodically (cheap read)
@@ -239,6 +239,15 @@ async def _auto_reply_loop(stop_event: asyncio.Event):
         if int(_time.time()) % 5 == 0:
             cfg_local = get_bot_config()
             cfg = cfg_local
+
+        # Ignore our own non-command messages to avoid loops
+        try:
+            if getattr(message, "outgoing", False):
+                txt = (message.text or message.caption or "").strip().lower()
+                if not (txt.startswith(".") or txt.startswith("/")):
+                    return
+        except Exception:
+            pass
 
         # rate limiting per chat
         chat_id = int(getattr(message.chat, "id", 0) or 0)
@@ -288,6 +297,14 @@ async def _auto_reply_loop(stop_event: asyncio.Event):
             prompt_text = user_text
 
         try:
+            # Симуляция печати (для человеческого ощущения)
+            if getattr(cfg, "humanize_typing_enabled", True):
+                import random
+                delay_ms = random.randint(int(getattr(cfg, "typing_min_ms", 800)), int(getattr(cfg, "typing_max_ms", 2500)))
+                with contextlib.suppress(Exception):
+                    await message.react("⌨️")  # необязательный жест, если доступен
+                await asyncio.sleep(delay_ms / 1000.0)
+
             reply = await llm_chat(prompt=prompt_text, system=(cfg.reply_prompt or None))
             if reply.strip():
                 await message.reply_text(reply, quote=True)

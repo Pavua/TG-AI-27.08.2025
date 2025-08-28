@@ -1,89 +1,94 @@
-# Roadmap
+# Дорожная карта (RU)
 
-## Phase 1 — Core plumbing (DONE)
-- Control Server (FastAPI) on 127.0.0.1:8787 with token auth
-  - Endpoints: /, /health, /llm/chat, /llm/config (GET/POST), /llm/providers, /logs/tail
-  - Basic rate limiting, request logging with redaction
-- LLM client (httpx, timeouts, 4096-char trim) with hot-reload config
-- AI commands: .ai, .sum, .tr (ru/en/es/uk)
-- Makefile (install/dev/test/run-server/run-ftg), scripts (string session, launchagent)
-- FTG launcher with auto-install attempts + lite userbot fallback
-
-Acceptance:
-- /health returns 200 with token; /llm/chat returns model output (LM Studio)
-- .ai/.sum/.tr work via lite userbot; logs accessible via /logs/tail
-
-## Phase 2 — FTG integration & process control (DONE)
-- /exec: start/stop/restart/status FTG via PID file
-- /send_message: send via Telethon (STRING_SESSION or ephemeral)
-- Auto-install AI module into FTG when available
+## Фаза 1 — Базовая инфраструктура (DONE)
+- Control Server (FastAPI) на 127.0.0.1:8787 с токен‑авторизацией
+  - Эндпойнты: `/`, `/health`, `/llm/chat`, `/llm/config` (GET/POST), `/llm/providers`, `/logs/tail`, `/exec`, `/send_message`, `/bot/config` (GET/POST), `/ui`
+  - Простейший rate‑limit и логирование
+- LLM клиент (httpx, таймауты, трим ответов) + нормализация LM Studio `/v1` и автопоиск `model id`
+- AI‑команды: `.ai`, `.sum`, `.tr` (ru/en/es/uk)
+- Makefile (`install/dev/test/run-server/run-ftg`), скрипты (string session, launchagent)
+- Фолбек‑лайт юзербот (Telethon)
 
 Acceptance:
-- Start/Stop/Restart работают из Control Server
-- /send_message отправляет в Saved Messages по username/id
+- `/health` 200 c токеном; `/llm/chat` возвращает ответ модели (LM Studio)
+- `.ai/.sum/.tr` работают через лайт‑бот; логи доступны через `/logs/tail`
 
-## Phase 3 — macOS GUI controls (IN PROGRESS)
-- Dashboard: buttons wired to /exec, real-time status (/health)
-- AI Settings: choose provider/model via /llm/config (OpenAI, Groq, LM Studio, …)
-- Logs: tail, search, copy
-- Web Panel: embedded (LM Studio UI at http://192.168.0.171:1234)
-- Bot Settings: тумблеры и параметры автоответчика (невидимое чтение, allow/block list)
+## Фаза 2 — Управление процессом FTG (DONE)
+- `/exec`: start/stop/restart/status через PID
+- `/send_message`: отправка через Pyrogram (session string)
+- Установка AI‑модуля в FTG при наличии
 
 Acceptance:
-- Все основные операции доступны из GUI без терминала
+- Старт/Стоп/Рестарт работают; `/send_message` отправляет в Saved Messages
 
-## Phase 4 — Security & UX polish (NEXT)
-- Keychain: хранение токенов и секретов
+## Фаза 3 — macOS GUI (IN PROGRESS)
+- Dashboard: кнопки `/exec`, живой статус (`/health`) + RU/EN переключатель
+- AI Settings: выбор провайдера/модели через `/llm/config` (OpenAI/Groq/LM Studio/…)
+- Logs: tail, копирование, автообновление
+- Web Panel: встроенная панель `/ui` (Exec + тест `/llm/chat`)
+- Messages: отправка сообщений (me/@username/ID)
+- Bot Settings: автоответчик (режимы, allow/block‑list, silent reading, системный prompt)
+- Command‑listener: .help/.ping/.ai работают без запуска Dragon‑Userbot
+
+Acceptance:
+- Все базовые операции доступны из GUI без терминала
+- Команды работают в Saved Messages и обычных чатах
+
+## Фаза 4 — Инструменты и интеграции LLM (NEXT)
+- MCP/инструменты LM Studio: включение `tool_choice=auto`, поддержка параллельных вызовов
+- Кнопка "Загрузить модели" (GET `/v1/models`) и выпадающий список в GUI
+- Управление ключами и профилями провайдеров; тест соединения
+
+Acceptance:
+- Модель с инструментами может вызывать MCP (например, web‑поиск), результаты видны в ответах
+
+## Фаза 5 — UX/автозапуск/безопасность (NEXT)
+- Keychain: хранение секретов (LLM API Key, FTG token)
 - SMAppService: автозапуск GUI (Login Item)
-- LaunchAgent: автозапуск FTG
-- Notifications, Shortcuts, accessibility, dark/light
+- LaunchAgent: автозапуск юзербота
+- Уведомления, тосты, светлая/тёмная темы
 
 Acceptance:
-- Секреты не в .env при использовании GUI; автозапуск работает
+- Секреты вне .env при использовании GUI; автозапуск включается из GUI
 
-## Phase 5 — Tests & Docs (NEXT)
+## Фаза 6 — Диалоги/логирование/память (NEXT)
+- Просмотр списка диалогов (read‑only) в GUI
+- Логирование удалённых сообщений, экспорты
+- Память чатов (переписки/тэги/профили), контекст для ИИ
 
----
+## Чек‑лист (статус)
+- [x] Сервер: токен, health, логи, LLM‑прокси
+- [x] LLM клиент: LM Studio `/v1`, поиск `model id`, таймауты
+- [x] Запуск Dragon‑Userbot: venv, Python 3.8–3.11, asyncio fix (work in progress)
+- [x] Session bootstrap: создание `my_account.session` (улучшено)
+- [x] GUI: Dashboard, AI, Logs, Messages, Server, Bot; RU/EN
+- [x] Web Panel: встроенный `/ui`
+- [x] Messages: Pyrogram‑отправка
+- [x] Команды: .help/.ping/.ai через command‑listener (без FTG)
+- [ ] Перезапуск FTG: устойчивый (наблюдаем, улучшаем)
+- [ ] MCP в LM Studio: проверка/включение, тест с web‑поиском
+- [ ] GUI: Models from `/v1/models`, тосты/индикаторы
+- [ ] Автозапуск: LaunchAgent + Login Item
+- [ ] Диалоги/удалённые сообщения (просмотр/лог)
+- [ ] Память и контекст ИИ
 
-## Milestones & Checklist
+## Гайд по использованию (кратко)
+1) LM Studio: запустите модель (например, `openai/gpt-oss-20b`).
+2) `.env`: заполните `TELEGRAM_API_ID`, `TELEGRAM_API_HASH`, `TELEGRAM_STRING_SESSION`, `FTG_CONTROL_TOKEN`, при необходимости `DRAGON_DB_URL`, `LLM_*`.
+3) Сервер: `make run-server` (GUI → Server → Ping /health = ok).
+4) GUI:
+   - AI: Base URL `http://192.168.0.171:1234/v1`, Model `openai/gpt-oss-20b`, Timeout 60–120, Test.
+   - Bot: включите автоответчик по желанию; allow/block‑list; системный prompt.
+   - Messages: `me` → Отправить.
+   - Панель: Start/Stop/Restart/Status.
+5) Команды в Telegram: `.help`, `.ping`, `.ai <текст>` — работают даже без Dragon‑Userbot.
 
-- [x] Control Server: token auth, health, logs, LLM proxy
-- [x] LLM client: LM Studio normalization (/v1), resolve model id, timeouts
-- [x] Dragon‑Userbot launcher: Python 3.8–3.11 discovery, .venv_dragon, asyncio fix
-- [x] Session bootstrap: create my_account.session from TELEGRAM_STRING_SESSION
-- [x] GUI: Dashboard, AI Settings, Logs, Messages, Server (token)
-- [x] Web Panel: temporary LM Studio UI
-- [x] Messages: send via Pyrogram (session string), no interactive prompts
-- [ ] GUI: Status/Restart/Stop robust UX (spinners, toasts)
-- [ ] GUI: Bot Settings – управление автоответчиком и списками чатов
-- [ ] GUI: Web Panel URL editable, error banner on load failure
-- [ ] GUI: AI Settings – dropdown from /models, timeout slider, latency stats
-- [ ] Security: store FTG_CONTROL_TOKEN & LLM_API_KEY only in Keychain; scrub defaults
-- [ ] LaunchAgent: enable/disable from GUI; login item for app
-- [ ] Shortcuts: quick actions for /exec and /send_message
-- [ ] Providers: OpenAI/Groq/OpenRouter toggles; connectivity tests
-- [ ] Tests: integration tests for /exec, /llm/chat; SwiftUI snapshot tests
-- [ ] Docs: full README with scenarios; screenshots; troubleshooting
-
-## Usage Guide (short)
-
-1. LM Studio: запустить модель; проверить API id (например, `openai/gpt-oss-20b`).
-2. .env: TELEGRAM_API_ID, TELEGRAM_API_HASH, TELEGRAM_STRING_SESSION, DRAGON_DB_URL, FTG_CONTROL_TOKEN.
-3. Сервер: `make run-server` (GUI → Server → Ping /health = ok).
-4. GUI:
-   - AI Settings: Base URL `http://192.168.0.171:1234/v1`, Model `openai/gpt-oss-20b`, Test.
-   - Messages: `me` → Send (ожидаем `{"ok":true}`).
-   - Dashboard: Start/Status/Stop FTG.
-
-## Next Sprint (1–2 дня)
-
-1) GUI Web Panel URL → editable + сохранение (Keychain/UserDefaults).  
-2) Dashboard UX: ненавязчивые тосты об ошибках/успехе, явный индикатор running.  
-3) AI Settings: список из /models + выбор модели в 1 клик; таймаут 15–90s.  
-4) LaunchAgent toggle в GUI (вкл/выкл автозапуск юзербота).  
-5) Документация по использованию бота: команда `.ai`, `.sum`, `.tr`, примеры.
-- Расширить unit/integration tests (Control Server, LLM, GUI hooks)
-- Документация с скриншотами и сценариями
+## Следующий спринт (1–2 дня)
+1) MCP‑режим LM Studio: убедиться, что инструменты включены (tool_choice=auto), провести E2E‑тест (web‑поиск)
+2) AI Settings: загрузка `/v1/models` + выбор модели + сохранение
+3) Dashboard: тосты/индикатор running; обработка таймаутов
+4) Диалоги (read‑only) и базовый журнал удалённых сообщений
+5) Документация (RU): README/скриншоты/траблшутинг
 
 Acceptance:
-- Тесты проходят; README-quickstart обновлён; скриншоты добавлены
+- Команды и MCP работают; GUI стабилен; документация обновлена

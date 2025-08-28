@@ -394,6 +394,11 @@ struct BotSettingsView: View {
     @State private var minReplyInterval: String = "5"
     @State private var replyPrompt: String = ""
     @State private var status: String = ""
+    // Humanize typing
+    @State private var humanizeTyping: Bool = true
+    @State private var typingMin: String = "800"
+    @State private var typingMax: String = "2500"
+    @State private var typoRate: String = "0.0"
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -414,6 +419,12 @@ struct BotSettingsView: View {
             TextField(appLang == "ru" ? "Минимальный интервал ответа (сек)" : "Min reply interval (sec)", text: $minReplyInterval)
                 .textFieldStyle(.roundedBorder)
             TextField(appLang == "ru" ? "Системный запрос (prompt)" : "Reply prompt (system)", text: $replyPrompt)
+            Toggle(appLang == "ru" ? "Симуляция печати" : "Humanize typing", isOn: $humanizeTyping)
+            HStack {
+                TextField(appLang == "ru" ? "Мин мс" : "Min ms", text: $typingMin)
+                TextField(appLang == "ru" ? "Макс мс" : "Max ms", text: $typingMax)
+                TextField(appLang == "ru" ? "% опечаток" : "Typo %", text: $typoRate)
+            }
             Spacer()
         }.padding()
     }
@@ -435,6 +446,10 @@ struct BotSettingsView: View {
                 silentReading = (cfg["silent_reading"] as? Bool) ?? true
                 if let v = cfg["min_reply_interval_seconds"] as? Int { minReplyInterval = String(v) }
                 replyPrompt = (cfg["reply_prompt"] as? String) ?? ""
+                humanizeTyping = (cfg["humanize_typing_enabled"] as? Bool) ?? true
+                if let v = cfg["typing_min_ms"] as? Int { typingMin = String(v) }
+                if let v = cfg["typing_max_ms"] as? Int { typingMax = String(v) }
+                if let v = cfg["typo_rate"] as? Double { typoRate = String(v) }
                 status = "Loaded"
             }
         } catch { status = "Load failed: \(error.localizedDescription)" }
@@ -450,9 +465,13 @@ struct BotSettingsView: View {
             "auto_reply_enabled": autoReplyEnabled,
             "auto_reply_mode": autoReplyMode,
             "silent_reading": silentReading,
-            "reply_prompt": replyPrompt
+            "reply_prompt": replyPrompt,
+            "humanize_typing_enabled": humanizeTyping
         ]
         if let n = Int(minReplyInterval) { payload["min_reply_interval_seconds"] = n }
+        if let n = Int(typingMin) { payload["typing_min_ms"] = n }
+        if let n = Int(typingMax) { payload["typing_max_ms"] = n }
+        if let x = Double(typoRate) { payload["typo_rate"] = x }
         if !allowlist.trimmingCharacters(in: .whitespaces).isEmpty {
             payload["allowlist_chats"] = allowlist.split(separator: ",").map { String($0).trimmingCharacters(in: .whitespaces) }
         }
