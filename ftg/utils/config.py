@@ -48,6 +48,10 @@ class BotConfig:
     typing_min_ms: int = int(os.getenv("BOT_TYPING_MIN_MS", "800"))
     typing_max_ms: int = int(os.getenv("BOT_TYPING_MAX_MS", "2500"))
     typo_rate: float = float(os.getenv("BOT_TYPO_RATE", "0.0"))
+    # Memory
+    memory_enabled: bool = (os.getenv("BOT_MEMORY_ENABLED", "1") == "1")
+    memory_window_messages: int = int(os.getenv("BOT_MEMORY_WINDOW", "6"))
+    memory_max_chars: int = int(os.getenv("BOT_MEMORY_MAX_CHARS", "4000"))
 
 
 _BOT_CONFIG: BotConfig = BotConfig()

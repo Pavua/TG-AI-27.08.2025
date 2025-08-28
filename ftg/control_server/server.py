@@ -151,6 +151,7 @@ _AUTH_STORE: Dict[str, Dict[str, str]] = {}
 _auto_worker_task: Optional[asyncio.Task] = None
 _auto_worker_should_stop: asyncio.Event | None = None
 _auto_worker_last_reply_at: Dict[int, float] = {}
+_chat_memory: Dict[int, list[str]] = {}
 
 
 def _is_pid_alive(pid: int) -> bool:
@@ -297,6 +298,14 @@ async def _auto_reply_loop(stop_event: asyncio.Event):
             prompt_text = user_text
 
         try:
+            # Собираем контекст из памяти, если включено
+            system_prompt = (cfg.reply_prompt or None)
+            if getattr(cfg, "memory_enabled", True):
+                history = _chat_memory.get(chat_id, [])[-int(getattr(cfg, "memory_window_messages", 6)) :]
+                if history:
+                    joined = "\n".join(history)[-int(getattr(cfg, "memory_max_chars", 4000)) :]
+                    system_prompt = (system_prompt + "\n" if system_prompt else "") + f"Контекст беседы (свободная форма):\n{joined}"
+
             # Симуляция печати (для человеческого ощущения)
             if getattr(cfg, "humanize_typing_enabled", True):
                 import random
@@ -305,10 +314,16 @@ async def _auto_reply_loop(stop_event: asyncio.Event):
                     await message.react("⌨️")  # необязательный жест, если доступен
                 await asyncio.sleep(delay_ms / 1000.0)
 
-            reply = await llm_chat(prompt=prompt_text, system=(cfg.reply_prompt or None))
+            reply = await llm_chat(prompt=prompt_text, system=system_prompt)
             if reply.strip():
                 await message.reply_text(reply, quote=True)
                 _auto_worker_last_reply_at[chat_id] = now
+                # Обновляем память чата
+                if getattr(cfg, "memory_enabled", True):
+                    rec_user = f"Пользователь: {user_text.strip()}"
+                    rec_bot = f"Бот: {reply.strip()}"
+                    buf = _chat_memory.setdefault(chat_id, [])
+                    buf.extend([rec_user, rec_bot])
         except Exception:
             # do not crash the worker on LLM errors
             pass

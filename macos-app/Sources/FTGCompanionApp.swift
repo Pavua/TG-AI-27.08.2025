@@ -399,6 +399,9 @@ struct BotSettingsView: View {
     @State private var typingMin: String = "800"
     @State private var typingMax: String = "2500"
     @State private var typoRate: String = "0.0"
+    @State private var memoryEnabled: Bool = true
+    @State private var memoryWindow: String = "6"
+    @State private var memoryMaxChars: String = "4000"
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -425,6 +428,11 @@ struct BotSettingsView: View {
                 TextField(appLang == "ru" ? "Макс мс" : "Max ms", text: $typingMax)
                 TextField(appLang == "ru" ? "% опечаток" : "Typo %", text: $typoRate)
             }
+            Toggle(appLang == "ru" ? "Память диалога" : "Conversation memory", isOn: $memoryEnabled)
+            HStack {
+                TextField(appLang == "ru" ? "Окно (сообщений)" : "Window (msgs)", text: $memoryWindow)
+                TextField(appLang == "ru" ? "Макс символов" : "Max chars", text: $memoryMaxChars)
+            }
             Spacer()
         }.padding()
     }
@@ -450,6 +458,9 @@ struct BotSettingsView: View {
                 if let v = cfg["typing_min_ms"] as? Int { typingMin = String(v) }
                 if let v = cfg["typing_max_ms"] as? Int { typingMax = String(v) }
                 if let v = cfg["typo_rate"] as? Double { typoRate = String(v) }
+                memoryEnabled = (cfg["memory_enabled"] as? Bool) ?? true
+                if let v = cfg["memory_window_messages"] as? Int { memoryWindow = String(v) }
+                if let v = cfg["memory_max_chars"] as? Int { memoryMaxChars = String(v) }
                 status = "Loaded"
             }
         } catch { status = "Load failed: \(error.localizedDescription)" }
@@ -472,6 +483,9 @@ struct BotSettingsView: View {
         if let n = Int(typingMin) { payload["typing_min_ms"] = n }
         if let n = Int(typingMax) { payload["typing_max_ms"] = n }
         if let x = Double(typoRate) { payload["typo_rate"] = x }
+        payload["memory_enabled"] = memoryEnabled
+        if let n = Int(memoryWindow) { payload["memory_window_messages"] = n }
+        if let n = Int(memoryMaxChars) { payload["memory_max_chars"] = n }
         if !allowlist.trimmingCharacters(in: .whitespaces).isEmpty {
             payload["allowlist_chats"] = allowlist.split(separator: ",").map { String($0).trimmingCharacters(in: .whitespaces) }
         }
