@@ -136,7 +136,8 @@ _UI_HTML = """
 
 
 @app.get("/ui")
-async def web_panel(_: str = Depends(require_token)):
+async def web_panel():
+    # UI доступен без токена; сами API-вызовы внутри страницы требуют X-FTG-Token
     return HTMLResponse(content=_UI_HTML)
 
 
