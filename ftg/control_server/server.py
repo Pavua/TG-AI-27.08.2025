@@ -229,9 +229,6 @@ async def _auto_reply_loop(stop_event: asyncio.Event):
             cfg_local = get_bot_config()
             cfg = cfg_local
 
-        if not cfg.auto_reply_enabled:
-            return
-
         # rate limiting per chat
         chat_id = int(getattr(message.chat, "id", 0) or 0)
         now = _time.time()
@@ -262,6 +259,9 @@ async def _auto_reply_loop(stop_event: asyncio.Event):
                 prompt_text = user_text[len(pfx):].strip()
                 break
         if prompt_text is None:
+            # если автоответ отключён — команды выше уже отработали; обычные ответы не шлём
+            if not cfg.auto_reply_enabled:
+                return
             # Команды не найдены — применяем allow/block и режим
             allow_set = set(str(x) for x in (cfg.allowlist_chats or ()))
             block_set = set(str(x) for x in (cfg.blocklist_chats or ()))

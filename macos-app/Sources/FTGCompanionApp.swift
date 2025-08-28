@@ -10,33 +10,44 @@ struct FTGCompanionApp: App {
 }
 
 struct MainView: View {
+    @AppStorage("AppLang") private var appLang: String = Locale.current.language.languageCode?.identifier == "ru" ? "ru" : "en"
     var body: some View {
-        TabView {
-            DashboardView()
-                .tabItem { Label("Dashboard", systemImage: "speedometer") }
+        VStack(spacing: 0) {
+            HStack {
+                Text(appLang == "ru" ? "Язык:" : "Language:")
+                Picker("", selection: $appLang) {
+                    Text("RU").tag("ru")
+                    Text("EN").tag("en")
+                }.pickerStyle(.segmented)
+                Spacer()
+            }.padding([.leading, .trailing, .top], 8)
+            TabView {
+                DashboardView(appLang: appLang)
+                    .tabItem { Label(appLang == "ru" ? "Панель" : "Dashboard", systemImage: "speedometer") }
 
-            AISettingsView()
-                .tabItem { Label("AI Settings", systemImage: "brain.head.profile") }
+                AISettingsView(appLang: appLang)
+                    .tabItem { Label(appLang == "ru" ? "ИИ" : "AI Settings", systemImage: "brain.head.profile") }
 
-            WebPanelContainer()
-                .tabItem { Label("Web Panel", systemImage: "globe") }
+                WebPanelContainer()
+                    .tabItem { Label(appLang == "ru" ? "Веб" : "Web Panel", systemImage: "globe") }
 
-            LogsView()
-                .tabItem { Label("Logs", systemImage: "doc.text.magnifyingglass") }
+                LogsView(appLang: appLang)
+                    .tabItem { Label(appLang == "ru" ? "Логи" : "Logs", systemImage: "doc.text.magnifyingglass") }
 
-            ShortcutsView()
-                .tabItem { Label("Shortcuts", systemImage: "bolt.fill") }
+                ShortcutsView(appLang: appLang)
+                    .tabItem { Label(appLang == "ru" ? "Ярлыки" : "Shortcuts", systemImage: "bolt.fill") }
 
-            MessagesView()
-                .tabItem { Label("Messages", systemImage: "paperplane.fill") }
+                MessagesView(appLang: appLang)
+                    .tabItem { Label(appLang == "ru" ? "Сообщения" : "Messages", systemImage: "paperplane.fill") }
 
-            ServerSettingsView()
-                .tabItem { Label("Server", systemImage: "lock.shield") }
+                ServerSettingsView(appLang: appLang)
+                    .tabItem { Label(appLang == "ru" ? "Сервер" : "Server", systemImage: "lock.shield") }
 
-            BotSettingsView()
-                .tabItem { Label("Bot Settings", systemImage: "gearshape") }
+                BotSettingsView(appLang: appLang)
+                    .tabItem { Label(appLang == "ru" ? "Бот" : "Bot Settings", systemImage: "gearshape") }
+            }
+            .frame(minWidth: 900, minHeight: 600)
         }
-        .frame(minWidth: 900, minHeight: 600)
     }
 }
 
@@ -60,6 +71,7 @@ final class ControlClient {
 }
 
 struct DashboardView: View {
+    let appLang: String
     @State private var status: String = "unknown"
     @State private var ftg: String = "unknown"
     @State private var loading = false
@@ -69,20 +81,20 @@ struct DashboardView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
-                Text("Status: ") + Text(status).bold()
-                Text("FTG: ") + Text(ftg).bold()
+                Text((appLang == "ru" ? "Статус: " : "Status: ")) + Text(status).bold()
+                Text((appLang == "ru" ? "FTG: " : "FTG: ")) + Text(ftg).bold()
                 Spacer()
-                Button(loading ? "Loading…" : "Refresh") { Task { await refresh() } }
+                Button(loading ? (appLang == "ru" ? "Загрузка…" : "Loading…") : (appLang == "ru" ? "Обновить" : "Refresh")) { Task { await refresh() } }
                     .disabled(loading)
             }
             HStack(spacing: 12) {
-                Button(actionInProgress ? "Starting…" : "Start") { Task { await execAction("start") } }
+                Button(actionInProgress ? (appLang == "ru" ? "Запуск…" : "Starting…") : (appLang == "ru" ? "Запустить" : "Start")) { Task { await execAction("start") } }
                     .disabled(ftgRunning || actionInProgress)
-                Button(actionInProgress ? "Stopping…" : "Stop") { Task { await execAction("stop") } }
+                Button(actionInProgress ? (appLang == "ru" ? "Остановка…" : "Stopping…") : (appLang == "ru" ? "Остановить" : "Stop")) { Task { await execAction("stop") } }
                     .disabled(!ftgRunning || actionInProgress)
-                Button(actionInProgress ? "Restarting…" : "Restart") { Task { await execAction("restart") } }
+                Button(actionInProgress ? (appLang == "ru" ? "Перезапуск…" : "Restarting…") : (appLang == "ru" ? "Перезапуск" : "Restart")) { Task { await execAction("restart") } }
                     .disabled(actionInProgress)
-                Button("Status") { Task { await execAction("status") } }
+                Button(appLang == "ru" ? "Статус" : "Status") { Task { await execAction("status") } }
             }
             Divider()
             if actionInProgress { ProgressView().controlSize(.small) }
@@ -149,6 +161,7 @@ struct DashboardView: View {
 }
 
 struct AISettingsView: View {
+    let appLang: String
     @State private var providers: [[String: Any]] = []
     @State private var selectedBaseURL: String = "http://127.0.0.1:1234/v1"
     @State private var model: String = "gpt-oss:latest"
@@ -159,17 +172,17 @@ struct AISettingsView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
-                Button("Load Providers") { Task { await loadProviders() } }
-                Button("Apply Config") { Task { await applyConfig() } }
-                Button("Save Key") { _ = Keychain.set(apiKey, for: "LLM_API_KEY") }
+                Button(appLang == "ru" ? "Загрузить провайдеры" : "Load Providers") { Task { await loadProviders() } }
+                Button(appLang == "ru" ? "Применить конфигурацию" : "Apply Config") { Task { await applyConfig() } }
+                Button(appLang == "ru" ? "Сохранить ключ" : "Save Key") { _ = Keychain.set(apiKey, for: "LLM_API_KEY") }
             }
-            TextField("Base URL", text: $selectedBaseURL)
-            TextField("Model", text: $model)
-            SecureField("API Key (optional)", text: $apiKey)
-            TextField("Request timeout seconds", text: $timeout)
-            TextField("Test prompt", text: $prompt)
+            TextField(appLang == "ru" ? "Базовый URL" : "Base URL", text: $selectedBaseURL)
+            TextField(appLang == "ru" ? "Модель" : "Model", text: $model)
+            SecureField(appLang == "ru" ? "API Ключ (опционально)" : "API Key (optional)", text: $apiKey)
+            TextField(appLang == "ru" ? "Время ожидания запроса (сек)" : "Request timeout seconds", text: $timeout)
+            TextField(appLang == "ru" ? "Тестовый запрос" : "Test prompt", text: $prompt)
             HStack {
-                Button("Test /llm/chat") { Task { await runTest() } }
+                Button(appLang == "ru" ? "Тест /llm/chat" : "Test /llm/chat") { Task { await runTest() } }
             }
             ScrollView { Text(output).frame(maxWidth: .infinity, alignment: .leading) }
             Spacer()
@@ -225,12 +238,13 @@ struct AISettingsView: View {
 import WebKit
 
 struct WebPanelContainer: View {
+    let appLang: String
     @State private var urlText: String = UserDefaults.standard.string(forKey: "WebPanelURL") ?? "http://127.0.0.1:8787/ui"
     var body: some View {
         VStack(spacing: 8) {
             HStack(spacing: 8) {
-                TextField("Web URL", text: $urlText)
-                Button("Open") {
+                TextField(appLang == "ru" ? "URL Веб-панели" : "Web URL", text: $urlText)
+                Button(appLang == "ru" ? "Открыть" : "Open") {
                     UserDefaults.standard.set(urlText, forKey: "WebPanelURL")
                 }
             }
@@ -255,14 +269,15 @@ struct WebPanelView: NSViewRepresentable {
 }
 
 struct LogsView: View {
+    let appLang: String
     @State private var lines: [String] = []
     @State private var autoRefresh = true
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
-                Button("Refresh") { Task { await refresh() } }
-                Toggle("Auto refresh", isOn: $autoRefresh).toggleStyle(.switch)
-                Button("Copy") { NSPasteboard.general.clearContents(); NSPasteboard.general.setString(lines.joined(separator: "\n"), forType: .string) }
+                Button(appLang == "ru" ? "Обновить" : "Refresh") { Task { await refresh() } }
+                Toggle(appLang == "ru" ? "Автоматическая обновление" : "Auto refresh", isOn: $autoRefresh).toggleStyle(.switch)
+                Button(appLang == "ru" ? "Копировать" : "Copy") { NSPasteboard.general.clearContents(); NSPasteboard.general.setString(lines.joined(separator: "\n"), forType: .string) }
                 Spacer()
             }
             Divider()
@@ -298,24 +313,26 @@ struct LogsView: View {
 }
 
 struct ShortcutsView: View {
+    let appLang: String
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Quick actions via /exec will appear here.")
+            Text(appLang == "ru" ? "Быстрые действия через /exec появятся здесь." : "Quick actions via /exec will appear here.")
             Spacer()
         }.padding()
     }
 }
 
 struct MessagesView: View {
+    let appLang: String
     @State private var chat: String = "me"
     @State private var text: String = "Hello from FTG"
     @State private var result: String = ""
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            TextField("Chat (username or ID)", text: $chat)
-            TextField("Text", text: $text)
+            TextField(appLang == "ru" ? "Чат (имя пользователя или ID)" : "Chat (username or ID)", text: $chat)
+            TextField(appLang == "ru" ? "Текст" : "Text", text: $text)
             HStack {
-                Button("Send") { Task { await send() } }
+                Button(appLang == "ru" ? "Отправить" : "Send") { Task { await send() } }
             }
             ScrollView { Text(result).frame(maxWidth: .infinity, alignment: .leading) }
             Spacer()
@@ -338,19 +355,20 @@ struct MessagesView: View {
 }
 
 struct ServerSettingsView: View {
+    let appLang: String
     @State private var token: String = Keychain.get("FTGControlToken") ?? UserDefaults.standard.string(forKey: "FTGControlToken") ?? ""
     @State private var pingResult: String = ""
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("FTG Control Server Token").font(.headline)
-            SecureField("Enter FTG control token", text: $token)
+            Text(appLang == "ru" ? "Токен сервера FTG Control" : "FTG Control Server Token").font(.headline)
+            SecureField(appLang == "ru" ? "Введите токен сервера FTG Control" : "Enter FTG control token", text: $token)
                 .textFieldStyle(.roundedBorder)
             HStack(spacing: 12) {
-                Button("Save Token") {
+                Button(appLang == "ru" ? "Сохранить токен" : "Save Token") {
                     _ = Keychain.set(token, for: "FTGControlToken")
                     UserDefaults.standard.set(token, forKey: "FTGControlToken")
                 }
-                Button("Ping /health") { Task { await ping() } }
+                Button(appLang == "ru" ? "Пинг /health" : "Ping /health") { Task { await ping() } }
             }
             if !pingResult.isEmpty { Text(pingResult).font(.caption).foregroundStyle(.secondary) }
             Spacer()
@@ -367,6 +385,7 @@ struct ServerSettingsView: View {
 }
 
 struct BotSettingsView: View {
+    let appLang: String
     @State private var autoReplyEnabled: Bool = false
     @State private var autoReplyMode: String = "off"
     @State private var allowlist: String = ""
@@ -379,22 +398,22 @@ struct BotSettingsView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack(spacing: 12) {
-                Button("Load") { Task { await load() } }
-                Button("Save") { Task { await save() } }
+                Button(appLang == "ru" ? "Загрузить" : "Load") { Task { await load() } }
+                Button(appLang == "ru" ? "Сохранить" : "Save") { Task { await save() } }
                 if !status.isEmpty { Text(status).font(.caption).foregroundStyle(.secondary) }
             }
-            Toggle("Auto reply enabled", isOn: $autoReplyEnabled)
-            Picker("Auto reply mode", selection: $autoReplyMode) {
+            Toggle(appLang == "ru" ? "Автоматическое ответление" : "Auto reply enabled", isOn: $autoReplyEnabled)
+            Picker(appLang == "ru" ? "Режим автоматического ответа" : "Auto reply mode", selection: $autoReplyMode) {
                 Text("Off").tag("off")
                 Text("Mentions only").tag("mentions_only")
                 Text("All").tag("all")
             }
-            TextField("Allowlist chats (comma-separated)", text: $allowlist)
-            TextField("Blocklist chats (comma-separated)", text: $blocklist)
-            Toggle("Silent reading (do not mark read)", isOn: $silentReading)
-            TextField("Min reply interval (sec)", text: $minReplyInterval)
+            TextField(appLang == "ru" ? "Разрешенные чаты (через запятую)" : "Allowed chats (comma-separated)", text: $allowlist)
+            TextField(appLang == "ru" ? "Заблокированные чаты (через запятую)" : "Blocked chats (comma-separated)", text: $blocklist)
+            Toggle(appLang == "ru" ? "Беззвучное чтение (не отмечать прочитанным)" : "Silent reading (do not mark read)", isOn: $silentReading)
+            TextField(appLang == "ru" ? "Минимальный интервал ответа (сек)" : "Min reply interval (sec)", text: $minReplyInterval)
                 .textFieldStyle(.roundedBorder)
-            TextField("Reply prompt (system)", text: $replyPrompt)
+            TextField(appLang == "ru" ? "Системный запрос (prompt)" : "Reply prompt (system)", text: $replyPrompt)
             Spacer()
         }.padding()
     }
