@@ -60,16 +60,29 @@ if __name__ == "__main__":
         os.environ["DATABASE_URL"] = os.environ["DRAGON_DB_URL"]
     os.environ.setdefault("DATABASE_TYPE", "mongodb")
     os.environ.setdefault("DATABASE_NAME", "ftg")
-    # Session mapping (try several common names)
-    if os.getenv("TELEGRAM_STRING_SESSION"):
-        for k in ("SESSION_STRING", "STRING_SESSION", "SESSION"):
-            os.environ.setdefault(k, os.environ["TELEGRAM_STRING_SESSION"])
+    # Session mapping (normalize across TELEGRAM_STRING_SESSION / SESSION_STRING / STRING_SESSION)
+    sess_any = (
+        os.getenv("TELEGRAM_STRING_SESSION")
+        or os.getenv("SESSION_STRING")
+        or os.getenv("STRING_SESSION")
+        or os.getenv("SESSION")
+    )
+    if sess_any:
+        os.environ["TELEGRAM_STRING_SESSION"] = sess_any
+        os.environ["SESSION_STRING"] = sess_any
+        os.environ["STRING_SESSION"] = sess_any
+        os.environ["SESSION"] = sess_any
 
     # One-time preflight: if we have a session string but no my_account.session file,
     # create it so Dragon-Userbot won't prompt for phone/token.
     try:
         session_file = FTG_REPO_PATH / "my_account.session"
-        sess = os.getenv("TELEGRAM_STRING_SESSION") or os.getenv("SESSION_STRING") or os.getenv("STRING_SESSION")
+        sess = (
+            os.getenv("TELEGRAM_STRING_SESSION")
+            or os.getenv("SESSION_STRING")
+            or os.getenv("STRING_SESSION")
+            or os.getenv("SESSION")
+        )
         if sess and not session_file.exists():
             from pyrogram import Client  # type: ignore
             api_id = int(os.getenv("API_ID") or os.getenv("TELEGRAM_API_ID") or 0)

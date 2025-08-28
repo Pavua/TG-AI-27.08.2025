@@ -809,3 +809,34 @@ INFO:pyrogram.connection.connection:Disconnected
 INFO:pyrogram.session.session:NetworkTask stopped
 INFO:pyrogram.session.session:Session stopped
 [run_dragon.py] An unexpected error occurred: EOF when reading a line
+[FTG] starting at Thu Aug 28 15:45:30 CEST 2025
+[FTG] Using detected local FTG repo: /Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo
+[FTG] Using local FTG repo: /Users/pablito/ТГ 26.08.2025 ИИ/ftg-suite/.ftg_repo
+[FTG] Installing dnspython for Mongo SRV support
+[FTG] Detected Dragon-Userbot (main.py).
+[FTG] Launching Dragon-Userbot with Python Python 3.11.13
+INFO:pyrogram.session.auth:Start creating a new auth key on DC2
+INFO:pyrogram.connection.connection:Connecting...
+INFO:pyrogram.connection.connection:Connected! Production DC2 - IPv4
+INFO:pyrogram.session.auth:Done auth key exchange: DhGenOk
+INFO:pyrogram.connection.connection:Disconnected
+INFO:pyrogram.connection.connection:Connecting...
+INFO:pyrogram.connection.connection:Connected! Production DC2 - IPv4
+INFO:pyrogram.session.session:NetworkTask started
+INFO:pyrogram.session.session:Session initialized: Layer 158
+INFO:pyrogram.session.session:Device: Dragon-Userbot @ ae021e8 - 4.0.1
+INFO:pyrogram.session.session:System: Darwin Kernel Version 25.0.0: Thu Aug 14 21:58:31 PDT 2025; root:xnu-12377.1.8~5/RELEASE_ARM64_T6041 arm64 (en)
+INFO:pyrogram.session.session:Session started
+[run_dragon.py] Loaded .env via python-dotenv
+[run_dragon.py] Applying macOS asyncio policy workaround
+[run_dragon.py] Successfully imported main from Dragon-Userbot
+Welcome to Pyrogram (version 2.0.106)
+Pyrogram is free software and comes with ABSOLUTELY NO WARRANTY. Licensed
+under the terms of the GNU Lesser General Public License v3.0 (LGPL-3.0).
+
+Enter phone number or bot token: INFO:pyrogram.session.session:PingTask started
+INFO:pyrogram.session.session:PingTask stopped
+INFO:pyrogram.connection.connection:Disconnected
+INFO:pyrogram.session.session:NetworkTask stopped
+INFO:pyrogram.session.session:Session stopped
+[run_dragon.py] An unexpected error occurred: EOF when reading a line
