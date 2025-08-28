@@ -73,8 +73,7 @@ if __name__ == "__main__":
         os.environ["STRING_SESSION"] = sess_any
         os.environ["SESSION"] = sess_any
 
-    # One-time preflight: if we have a session string but no my_account.session file,
-    # create it so Dragon-Userbot won't prompt for phone/token.
+    # Preflight: if we have a session string, (re)create my_account.session to avoid interactive prompts.
     try:
         session_file = FTG_REPO_PATH / "my_account.session"
         sess = (
@@ -83,11 +82,17 @@ if __name__ == "__main__":
             or os.getenv("STRING_SESSION")
             or os.getenv("SESSION")
         )
-        if sess and not session_file.exists():
+        if sess:
             from pyrogram import Client  # type: ignore
             api_id = int(os.getenv("API_ID") or os.getenv("TELEGRAM_API_ID") or 0)
             api_hash = os.getenv("API_HASH") or os.getenv("TELEGRAM_API_HASH") or ""
             if api_id and api_hash:
+                # Force refresh the file in case it is corrupt or for a different API ID
+                if session_file.exists():
+                    try:
+                        session_file.unlink()
+                    except Exception:
+                        pass
                 print("[run_dragon.py] Creating my_account.session from TELEGRAM_STRING_SESSION...")
                 # Ensure working directory is repo so the file is created in the right place
                 os.chdir(str(FTG_REPO_PATH))
