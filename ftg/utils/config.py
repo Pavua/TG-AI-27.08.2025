@@ -30,6 +30,24 @@ class SecurityConfig:
 _LLM_CONFIG: LLMConfig = LLMConfig()
 
 
+@dataclass(frozen=True)
+class BotConfig:
+    auto_reply_enabled: bool = (os.getenv("BOT_AUTO_REPLY_ENABLED", "0") == "1")
+    auto_reply_mode: str = os.getenv("BOT_AUTO_REPLY_MODE", "off")  # off|mentions_only|all
+    allowlist_chats: tuple[str, ...] = tuple(
+        [x.strip() for x in (os.getenv("BOT_ALLOWLIST_CHATS", "").split(",") if os.getenv("BOT_ALLOWLIST_CHATS") else []) if x.strip()]
+    )
+    blocklist_chats: tuple[str, ...] = tuple(
+        [x.strip() for x in (os.getenv("BOT_BLOCKLIST_CHATS", "").split(",") if os.getenv("BOT_BLOCKLIST_CHATS") else []) if x.strip()]
+    )
+    silent_reading: bool = (os.getenv("BOT_SILENT_READING", "1") == "1")
+    min_reply_interval_seconds: int = int(os.getenv("BOT_MIN_REPLY_INTERVAL", "5"))
+    reply_prompt: str = os.getenv("BOT_REPLY_PROMPT", "")
+
+
+_BOT_CONFIG: BotConfig = BotConfig()
+
+
 def get_llm_config() -> LLMConfig:
     return _LLM_CONFIG
 
@@ -51,6 +69,27 @@ def llm_config_dict(redact_api_key: bool = True) -> Dict[str, Any]:
 
 def get_security_config() -> SecurityConfig:
     return SecurityConfig()
+
+
+def get_bot_config() -> BotConfig:
+    return _BOT_CONFIG
+
+
+def update_bot_config(**kwargs: Any) -> BotConfig:
+    global _BOT_CONFIG
+    allowed_fields = set(BotConfig().__dict__.keys())
+    filtered: Dict[str, Any] = {k: v for k, v in kwargs.items() if k in allowed_fields}
+    # convert lists to tuples for immutability
+    if "allowlist_chats" in filtered and isinstance(filtered["allowlist_chats"], list):
+        filtered["allowlist_chats"] = tuple(filtered["allowlist_chats"])  # type: ignore[assignment]
+    if "blocklist_chats" in filtered and isinstance(filtered["blocklist_chats"], list):
+        filtered["blocklist_chats"] = tuple(filtered["blocklist_chats"])  # type: ignore[assignment]
+    _BOT_CONFIG = replace(_BOT_CONFIG, **filtered)
+    return _BOT_CONFIG
+
+
+def bot_config_dict() -> Dict[str, Any]:
+    return asdict(_BOT_CONFIG)
 
 import os
 def env(n,d=None):

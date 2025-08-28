@@ -11,9 +11,24 @@ from typing import Deque, Dict
 from fastapi import Depends, FastAPI, Header, HTTPException, Query, Request
 from fastapi.responses import JSONResponse
 
-from ..utils.config import get_security_config, llm_config_dict, update_llm_config
+from ..utils.config import (
+    get_security_config,
+    llm_config_dict,
+    update_llm_config,
+    get_bot_config,
+    update_bot_config,
+    bot_config_dict,
+)
 from ..utils.llm_client import chat as llm_chat
-from .schemas import ChatPayload, ExecRequest, LLMChatRequest, SendMessageRequest, LLMConfigPayload, LLMProviderInfo
+from .schemas import (
+    ChatPayload,
+    ExecRequest,
+    LLMChatRequest,
+    SendMessageRequest,
+    LLMConfigPayload,
+    LLMProviderInfo,
+    BotConfigPayload,
+)
 
 
 app = FastAPI()
@@ -212,6 +227,17 @@ async def llm_list_providers(_: str = Depends(require_token)):
         LLMProviderInfo(id="ollama", name="Ollama (local)", base_url="http://127.0.0.1:11434/v1"),
     ]
     return {"ok": True, "providers": [p.model_dump() for p in providers]}
+
+
+@app.get("/bot/config")
+async def bot_get_config(_: str = Depends(require_token)):
+    return {"ok": True, "config": bot_config_dict()}
+
+
+@app.post("/bot/config")
+async def bot_update_config(payload: BotConfigPayload, _: str = Depends(require_token)):
+    update_bot_config(**{k: v for k, v in payload.model_dump(exclude_none=True).items()})
+    return {"ok": True, "config": bot_config_dict()}
 
 
 @app.get("/logs/tail")

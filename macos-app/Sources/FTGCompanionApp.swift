@@ -32,6 +32,9 @@ struct MainView: View {
 
             ServerSettingsView()
                 .tabItem { Label("Server", systemImage: "lock.shield") }
+
+            BotSettingsView()
+                .tabItem { Label("Bot Settings", systemImage: "gearshape") }
         }
         .frame(minWidth: 900, minHeight: 600)
     }
@@ -337,5 +340,87 @@ struct ServerSettingsView: View {
         } catch {
             pingResult = "Ping failed: \(error.localizedDescription)"
         }
+    }
+}
+
+struct BotSettingsView: View {
+    @State private var autoReplyEnabled: Bool = false
+    @State private var autoReplyMode: String = "off"
+    @State private var allowlist: String = ""
+    @State private var blocklist: String = ""
+    @State private var silentReading: Bool = true
+    @State private var minReplyInterval: String = "5"
+    @State private var replyPrompt: String = ""
+    @State private var status: String = ""
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            HStack(spacing: 12) {
+                Button("Load") { Task { await load() } }
+                Button("Save") { Task { await save() } }
+                if !status.isEmpty { Text(status).font(.caption).foregroundStyle(.secondary) }
+            }
+            Toggle("Auto reply enabled", isOn: $autoReplyEnabled)
+            Picker("Auto reply mode", selection: $autoReplyMode) {
+                Text("Off").tag("off")
+                Text("Mentions only").tag("mentions_only")
+                Text("All").tag("all")
+            }
+            TextField("Allowlist chats (comma-separated)", text: $allowlist)
+            TextField("Blocklist chats (comma-separated)", text: $blocklist)
+            Toggle("Silent reading (do not mark read)", isOn: $silentReading)
+            TextField("Min reply interval (sec)", text: $minReplyInterval)
+                .textFieldStyle(.roundedBorder)
+            TextField("Reply prompt (system)", text: $replyPrompt)
+            Spacer()
+        }.padding()
+    }
+
+    private func load() async {
+        guard let url = URL(string: "http://127.0.0.1:8787/bot/config") else { return }
+        var req = URLRequest(url: url)
+        req.addValue(Keychain.get("FTGControlToken") ?? UserDefaults.standard.string(forKey: "FTGControlToken") ?? "changeme_local_token", forHTTPHeaderField: "X-FTG-Token")
+        do {
+            let (data, _) = try await URLSession.shared.data(for: req)
+            if let obj = try JSONSerialization.jsonObject(with: data) as? [String: Any],
+               let cfg = obj["config"] as? [String: Any] {
+                autoReplyEnabled = (cfg["auto_reply_enabled"] as? Bool) ?? false
+                autoReplyMode = (cfg["auto_reply_mode"] as? String) ?? "off"
+                let allow = (cfg["allowlist_chats"] as? [Any])?.compactMap { String(describing: $0) } ?? []
+                allowlist = allow.joined(separator: ",")
+                let block = (cfg["blocklist_chats"] as? [Any])?.compactMap { String(describing: $0) } ?? []
+                blocklist = block.joined(separator: ",")
+                silentReading = (cfg["silent_reading"] as? Bool) ?? true
+                if let v = cfg["min_reply_interval_seconds"] as? Int { minReplyInterval = String(v) }
+                replyPrompt = (cfg["reply_prompt"] as? String) ?? ""
+                status = "Loaded"
+            }
+        } catch { status = "Load failed: \(error.localizedDescription)" }
+    }
+
+    private func save() async {
+        guard let url = URL(string: "http://127.0.0.1:8787/bot/config") else { return }
+        var req = URLRequest(url: url)
+        req.httpMethod = "POST"
+        req.addValue(Keychain.get("FTGControlToken") ?? UserDefaults.standard.string(forKey: "FTGControlToken") ?? "changeme_local_token", forHTTPHeaderField: "X-FTG-Token")
+        req.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        var payload: [String: Any] = [
+            "auto_reply_enabled": autoReplyEnabled,
+            "auto_reply_mode": autoReplyMode,
+            "silent_reading": silentReading,
+            "reply_prompt": replyPrompt
+        ]
+        if let n = Int(minReplyInterval) { payload["min_reply_interval_seconds"] = n }
+        if !allowlist.trimmingCharacters(in: .whitespaces).isEmpty {
+            payload["allowlist_chats"] = allowlist.split(separator: ",").map { String($0).trimmingCharacters(in: .whitespaces) }
+        }
+        if !blocklist.trimmingCharacters(in: .whitespaces).isEmpty {
+            payload["blocklist_chats"] = blocklist.split(separator: ",").map { String($0).trimmingCharacters(in: .whitespaces) }
+        }
+        req.httpBody = try? JSONSerialization.data(withJSONObject: payload)
+        do {
+            let (data, _) = try await URLSession.shared.data(for: req)
+            if let _ = try JSONSerialization.jsonObject(with: data) as? [String: Any] { status = "Saved" }
+        } catch { status = "Save failed: \(error.localizedDescription)" }
     }
 }

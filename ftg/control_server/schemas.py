@@ -36,3 +36,15 @@ class LLMProviderInfo(BaseModel):
     id: str
     name: str
     base_url: str
+
+
+class BotConfigPayload(BaseModel):
+    auto_reply_enabled: Optional[bool] = None
+    auto_reply_mode: Optional[str] = Field(
+        default=None, description="one of: off, mentions_only, all"
+    )
+    allowlist_chats: Optional[list[str | int]] = None
+    blocklist_chats: Optional[list[str | int]] = None
+    silent_reading: Optional[bool] = None
+    min_reply_interval_seconds: Optional[int] = Field(default=None, ge=0)
+    reply_prompt: Optional[str] = None
