@@ -5,8 +5,11 @@ import signal
 import subprocess
 import time
 from collections import deque
+import asyncio
+import time as _time
+import contextlib
 from pathlib import Path
-from typing import Deque, Dict
+from typing import Deque, Dict, Optional, Any
 
 from fastapi import Depends, FastAPI, Header, HTTPException, Query, Request
 from fastapi.responses import JSONResponse
@@ -84,6 +87,11 @@ _PID_FILE = _ROOT_DIR / "ftg/ftg_runner.pid"
 # Temporary auth store for generating Pyrogram string sessions
 _AUTH_STORE: Dict[str, Dict[str, str]] = {}
 
+# Auto-reply worker state
+_auto_worker_task: Optional[asyncio.Task] = None
+_auto_worker_should_stop: asyncio.Event | None = None
+_auto_worker_last_reply_at: Dict[int, float] = {}
+
 
 def _is_pid_alive(pid: int) -> bool:
     try:
@@ -106,6 +114,118 @@ def _read_pid() -> int | None:
 def _write_pid(pid: int) -> None:
     _PID_FILE.parent.mkdir(parents=True, exist_ok=True)
     _PID_FILE.write_text(str(pid))
+
+
+async def _auto_reply_loop(stop_event: asyncio.Event):
+    try:
+        from pyrogram import Client, filters  # type: ignore
+    except Exception:
+        return
+
+    api_id = int(os.getenv("API_ID") or os.getenv("TELEGRAM_API_ID") or 0)
+    api_hash = os.getenv("API_HASH") or os.getenv("TELEGRAM_API_HASH") or ""
+    session_string = (
+        os.getenv("TELEGRAM_STRING_SESSION")
+        or os.getenv("SESSION_STRING")
+        or os.getenv("STRING_SESSION")
+        or ""
+    )
+    if not (api_id and api_hash and session_string):
+        return
+
+    cfg = get_bot_config()
+
+    app = Client(
+        "ftg_autoreply",
+        api_id=api_id,
+        api_hash=api_hash,
+        session_string=session_string,
+        device_model="FTG-Companion-Auto",
+    )  # type: ignore
+
+    allow_set = set(str(x) for x in (cfg.allowlist_chats or ()))
+    block_set = set(str(x) for x in (cfg.blocklist_chats or ()))
+
+    def _chat_in_list(chat: Any, lst: set[str]) -> bool:
+        if not chat:
+            return False
+        cid = getattr(chat, "id", None)
+        username = getattr(chat, "username", None)
+        title = getattr(chat, "title", None)
+        candidates = []
+        if cid is not None:
+            candidates.append(str(cid))
+        if username:
+            candidates.append(str(username))
+        if title:
+            candidates.append(str(title))
+        return any(c in lst for c in candidates)
+
+    @app.on_message(filters.incoming)
+    async def handler(client, message):  # type: ignore
+        nonlocal cfg
+        # reload latest cfg periodically (cheap read)
+        # avoid excessive locking: refresh every 5 seconds
+        if int(_time.time()) % 5 == 0:
+            cfg_local = get_bot_config()
+            cfg = cfg_local
+
+        if not cfg.auto_reply_enabled:
+            return
+
+        # allow/block filtering
+        if allow_set and not _chat_in_list(message.chat, allow_set):
+            return
+        if block_set and _chat_in_list(message.chat, block_set):
+            return
+
+        # mode filtering
+        if cfg.auto_reply_mode == "off":
+            return
+        if cfg.auto_reply_mode == "mentions_only":
+            if not (message.mentioned or (message.text and client.me and (getattr(client.me, "username", None) or "") in message.text)):
+                return
+
+        # rate limiting per chat
+        chat_id = int(getattr(message.chat, "id", 0) or 0)
+        now = _time.time()
+        last_at = _auto_worker_last_reply_at.get(chat_id, 0)
+        if now - last_at < max(0, int(cfg.min_reply_interval_seconds or 0)):
+            return
+
+        user_text = message.text or message.caption or ""
+        if not user_text.strip():
+            return
+        try:
+            reply = await llm_chat(prompt=user_text, system=(cfg.reply_prompt or None))
+            if reply.strip():
+                await message.reply_text(reply, quote=True)
+                _auto_worker_last_reply_at[chat_id] = now
+        except Exception:
+            # do not crash the worker on LLM errors
+            pass
+
+    try:
+        await app.start()
+        while not stop_event.is_set():
+            await asyncio.sleep(0.5)
+    finally:
+        with contextlib.suppress(Exception):
+            await app.stop()
+
+
+def _ensure_auto_worker() -> None:
+    global _auto_worker_task, _auto_worker_should_stop
+    cfg = get_bot_config()
+    should_run = bool(cfg.auto_reply_enabled)
+    is_running = _auto_worker_task is not None and not _auto_worker_task.done()
+    if should_run and not is_running:
+        _auto_worker_should_stop = asyncio.Event()
+        _auto_worker_task = asyncio.create_task(_auto_reply_loop(_auto_worker_should_stop))
+    elif not should_run and is_running:
+        if _auto_worker_should_stop is not None:
+            _auto_worker_should_stop.set()
+        _auto_worker_task = None
 
 
 def _start_ftg() -> Dict[str, str | bool]:
@@ -237,7 +357,13 @@ async def bot_get_config(_: str = Depends(require_token)):
 @app.post("/bot/config")
 async def bot_update_config(payload: BotConfigPayload, _: str = Depends(require_token)):
     update_bot_config(**{k: v for k, v in payload.model_dump(exclude_none=True).items()})
+    _ensure_auto_worker()
     return {"ok": True, "config": bot_config_dict()}
+
+
+@app.on_event("startup")
+async def on_startup():
+    _ensure_auto_worker()
 
 
 @app.get("/logs/tail")
