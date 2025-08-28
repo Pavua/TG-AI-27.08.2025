@@ -308,8 +308,9 @@ async def _auto_reply_loop(stop_event: asyncio.Event):
 def _ensure_auto_worker() -> None:
     global _auto_worker_task, _auto_worker_should_stop
     cfg = get_bot_config()
-    # Do not run our own Pyrogram client if FTG process is running to avoid session conflicts
-    should_run = bool(cfg.auto_reply_enabled) and not bool(_read_pid())
+    # Always run worker to catch commands (.ai/.help/.ping), even if FTG is running.
+    # Auto-replies will still respect cfg.auto_reply_enabled in handler.
+    should_run = True
     is_running = _auto_worker_task is not None and not _auto_worker_task.done()
     if should_run and not is_running:
         _auto_worker_should_stop = asyncio.Event()
